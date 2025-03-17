@@ -4,8 +4,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# print out the exit code of the last command after the current path in the command line
-PROMPT='%F{cyan}%~%f [%?] %# '
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -73,11 +71,11 @@ ZSH_THEME="amuse"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
-  zsh-syntax-highlighting
-  zsh-autosuggestions
-  you-should-use
-  zsh-bat
+git
+zsh-syntax-highlighting
+zsh-autosuggestions
+you-should-use
+zsh-bat
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -112,10 +110,20 @@ autoload -Uz compinit
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
+# print out the exit code of the last command after the current path in the command line
+# we have to override it to write everything from scratch as there is no option in the theme to just configure
+# somehting additionally that also gets tracked in this repository
+PROMPT='
+%{$fg_bold[green]%}%~%{$reset_color%}$(git_prompt_info)$(virtualenv_prompt_info) ⌚ %{$fg_bold[red]%}%*%{$reset_color%}
+[%?] $ '
+
 export PATH="$PATH:/home/lucas-dev/flutter/bin"
 export PATH="$PATH:/home/lucas-dev/Documents/git/bashtop"
 export PATH="$PATH:/home/lucas-dev/.platformio/penv/bin"
 export PATH="$PATH:/usr/bin/graphviz"
+export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
+alias tf="terraform"
 alias unity="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity"
 alias unity_feuersim="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity -projectpath /home/lucas-dev/Documents/git/FeuerSim"
+
