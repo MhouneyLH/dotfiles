@@ -122,8 +122,24 @@ export PATH="$PATH:/home/lucas-dev/Documents/git/bashtop"
 export PATH="$PATH:/home/lucas-dev/.platformio/penv/bin"
 export PATH="$PATH:/usr/bin/graphviz"
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+export PATH="$PATH:/opt/arduino-ide"
 
+# general
+alias cdg="cd /home/$USER/Documents/git/"
 alias tf="terraform"
+alias ..="cd .."
+alias ...="cd ..."
+alias ....="cd ...."
+alias .....="cd ....."
+alias grep="grep --color=auto"
+alias h="history"
+alias cat="batcat"
+
+# system
+alias cleanup="sudo apt autoremove && sudo apt autoclean"
+alias update="sudo apt update && sudo apt upgrade"
+
+# programs
 alias unity="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity"
 alias unity_feuersim="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity -projectpath /home/lucas-dev/Documents/git/FeuerSim"
 
