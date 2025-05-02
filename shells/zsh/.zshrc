@@ -123,6 +123,7 @@ export PATH="$PATH:/home/lucas-dev/.platformio/penv/bin"
 export PATH="$PATH:/usr/bin/graphviz"
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="$PATH:/opt/arduino-ide"
+export PATH="$PATH:/opt/Postman"
 
 # general
 alias cdg="cd /home/$USER/Documents/git/"
