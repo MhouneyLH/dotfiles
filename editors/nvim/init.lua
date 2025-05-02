@@ -670,6 +670,18 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+        omnisharp = {
+          cmd = { 'omnisharp', '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
+          filetypes = { 'cs', 'csx' }, -- Only for C# files
+          capabilities = vim.lsp.protocol.make_client_capabilities(), -- Enables LSP features
+          settings = {
+            omnisharp = {
+              useModernNet = false, -- Ensures compatibility with Unity's .NET version
+              enableRoslynAnalyzers = false, -- Prevents unnecessary performance issues
+              enableEditorConfigSupport = true, -- Loads Unity's coding conventions
+            },
+          },
+        },
 
         lua_ls = {
           -- cmd = { ... },
@@ -685,6 +697,18 @@ require('lazy').setup({
             },
           },
         },
+      }
+
+      vim.api.nvim_create_autocmd('BufWritePre', {
+        pattern = '*.cs', -- Applies to all C# files
+        callback = function()
+          vim.lsp.buf.format() -- Calls the LSP's formatting function
+        end,
+      })
+
+      capabilities = require('cmp_nvim_lsp').default_capabilities()
+      require('lspconfig').omnisharp.setup {
+        capabilities = capabilities,
       }
 
       -- Ensure the servers and tools above are installed
