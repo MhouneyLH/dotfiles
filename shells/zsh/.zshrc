@@ -117,6 +117,7 @@ PROMPT='
 %{$fg_bold[green]%}%~%{$reset_color%}$(git_prompt_info)$(virtualenv_prompt_info) ⌚ %{$fg_bold[red]%}%*%{$reset_color%}
 [%?] $ '
 
+# PATH
 export PATH="$PATH:/home/lucas-dev/flutter/bin"
 export PATH="$PATH:/home/lucas-dev/Documents/git/bashtop"
 export PATH="$PATH:/home/lucas-dev/.platformio/penv/bin"
@@ -124,6 +125,11 @@ export PATH="$PATH:/usr/bin/graphviz"
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="$PATH:/opt/arduino-ide"
 export PATH="$PATH:/opt/Postman"
+
+# speed of moving with keyboard
+timeUntilRepeating=300
+repeatRate=30
+xset r rate $timeUntilRepeating $repeatRate
 
 # general
 alias cdg="cd /home/$USER/Documents/git/"
