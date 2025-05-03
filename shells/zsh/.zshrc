@@ -126,6 +126,9 @@ export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="$PATH:/opt/arduino-ide"
 export PATH="$PATH:/opt/Postman"
 
+# java shit
+export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
+
 # speed of moving with keyboard
 timeUntilRepeating=300
 repeatRate=30
@@ -149,7 +152,6 @@ alias update="sudo apt update && sudo apt upgrade"
 # programs
 alias unity="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity"
 alias unity_feuersim="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity -projectpath /home/lucas-dev/Documents/git/FeuerSim"
-
 
 # pnpm
 export PNPM_HOME="/home/lucas-dev/.local/share/pnpm"
