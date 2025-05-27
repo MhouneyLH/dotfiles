@@ -144,6 +144,8 @@ alias .....="cd ....."
 alias grep="grep --color=auto"
 alias h="history"
 alias cat="batcat"
+alias uncorrupt_steam="mv ~/.steam ~/.steam.bak && mv ~/.local/share/Steam ~/.local/share/Steam.bak"
+alias dpsn="docker ps --format '{{.Names}}'" # only get names of the running services
 
 # system
 alias cleanup="sudo apt autoremove && sudo apt autoclean"
