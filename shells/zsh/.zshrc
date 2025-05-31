@@ -130,7 +130,7 @@ export PATH="$PATH:/opt/Postman"
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
 
 # speed of moving with keyboard
-timeUntilRepeating=300
+timeUntilRepeating=200
 repeatRate=30
 xset r rate $timeUntilRepeating $repeatRate
 
