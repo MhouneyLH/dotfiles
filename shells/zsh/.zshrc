@@ -125,6 +125,7 @@ export PATH="$PATH:/usr/bin/graphviz"
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="$PATH:/opt/arduino-ide"
 export PATH="$PATH:/opt/Postman"
+export PATH="$PATH:/home/lucas-dev/.cargo/bin"
 
 # java shit
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
