@@ -118,7 +118,7 @@ PROMPT='
 [%?] $ '
 
 # PATH
-export PATH="$PATH:/home/lucas-dev/flutter/bin"
+export PATH="$PATH:/home/lucas-dev/flutter/bin" # todo: maybe outdated
 export PATH="$PATH:/home/lucas-dev/Documents/git/bashtop"
 export PATH="$PATH:/home/lucas-dev/.platformio/penv/bin"
 export PATH="$PATH:/usr/bin/graphviz"
@@ -126,6 +126,7 @@ export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 export PATH="$PATH:/opt/arduino-ide"
 export PATH="$PATH:/opt/Postman"
 export PATH="$PATH:/home/lucas-dev/.cargo/bin"
+export PATH="$PATH:/opt/android-studio/bin"
 
 # java shit
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
