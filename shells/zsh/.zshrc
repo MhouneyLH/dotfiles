@@ -127,6 +127,7 @@ export PATH="$PATH:/opt/arduino-ide"
 export PATH="$PATH:/opt/Postman"
 export PATH="$PATH:/home/lucas-dev/.cargo/bin"
 export PATH="$PATH:/opt/android-studio/bin"
+export PATH="$PATH:$HOME/.dotnet/tools"
 
 # java shit
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
@@ -157,6 +158,7 @@ alias update="sudo apt update && sudo apt upgrade"
 alias unity="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity"
 alias unity_feuersim="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity -projectpath /home/lucas-dev/Documents/git/FeuerSim"
 alias dn="dotnet"
+alias postman="Postman"
 
 # pnpm
 export PNPM_HOME="/home/lucas-dev/.local/share/pnpm"
