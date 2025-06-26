@@ -128,6 +128,7 @@ export PATH="$PATH:/opt/Postman"
 export PATH="$PATH:/home/lucas-dev/.cargo/bin"
 export PATH="$PATH:/opt/android-studio/bin"
 export PATH="$PATH:$HOME/.dotnet/tools"
+export PATH="$PATH:$HOME/Documents/programs/flutter/bin"
 
 # java shit
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
