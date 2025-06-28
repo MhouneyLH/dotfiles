@@ -129,6 +129,7 @@ export PATH="$PATH:/home/lucas-dev/.cargo/bin"
 export PATH="$PATH:/opt/android-studio/bin"
 export PATH="$PATH:$HOME/.dotnet/tools"
 export PATH="$PATH:$HOME/Documents/programs/flutter/bin"
+export PATH="$PATH":"$HOME/.pub-cache/bin"
 
 # java shit
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
@@ -172,3 +173,5 @@ esac
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
+. "$HOME/.local/bin/env"
