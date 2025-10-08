@@ -134,8 +134,8 @@ export PATH="$PATH":"$HOME/.pub-cache/bin"
 # java shit
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
 
-# speed of moving with keyboard
-timeUntilRepeating=200
+# speed of moving with keyboard (on kde is adjusted in settings -> search for "repeat" in settings)
+timeUntilRepeating=150
 repeatRate=30
 xset r rate $timeUntilRepeating $repeatRate
 
