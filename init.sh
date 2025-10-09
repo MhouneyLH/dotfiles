@@ -12,6 +12,8 @@
 # key repetitions
 # follow: https://docs.docker.com/engine/install/debian/
 # start syncing settings in brave
+# download deb from here: https://obsidian.md/download
+# had some quirks with network configuration outside of home (after some investigation, NetworkManager configurations and a reboot, it somehow started working again) + also installed firmware stuff
 
 sudo su
 sudo adduser -aG sudo lucas-dev
@@ -36,4 +38,3 @@ chsh -s $(which zsh) # is applied after reboot
 
  sudo groupadd docker
 sudo usermod -aG docker $USER
-
