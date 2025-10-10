@@ -38,3 +38,7 @@ chsh -s $(which zsh) # is applied after reboot
 
  sudo groupadd docker
 sudo usermod -aG docker $USER
+
+sudo nala install nodejs npm -y
+sudo npm install -g pnpm@latest-10
+
