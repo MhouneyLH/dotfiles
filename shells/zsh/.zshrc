@@ -134,8 +134,9 @@ export PATH="$PATH":"$HOME/.pub-cache/bin"
 # java shit
 export JAVA_HOME="/home/lucas-dev/.jdks/openjdk-24.0.1"
 
-# speed of moving with keyboard (on kde is adjusted in settings -> search for "repeat" in settings)
-timeUntilRepeating=150
+# speed of moving with keyboard (on kde [wayland; maybe also x11] is adjusted in settings -> search for "repeat" in settings)
+# still some applications use this setting (due to compatability?) -> e.g. VSCode or GitKraken
+timeUntilRepeating=350
 repeatRate=30
 xset r rate $timeUntilRepeating $repeatRate
 
