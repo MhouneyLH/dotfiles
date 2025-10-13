@@ -42,4 +42,4 @@ sudo usermod -aG docker $USER
 sudo nala install nodejs npm -y
 sudo npm install -g pnpm@latest-10
 
-sudo nala install vim rename -y
+sudo nala install vim rename gh -y
