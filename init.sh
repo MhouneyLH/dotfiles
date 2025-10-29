@@ -43,3 +43,9 @@ sudo nala install nodejs npm -y
 sudo npm install -g pnpm@latest-10
 
 sudo nala install vim rename gh -y
+
+sudo wget https://github.com/derailed/k9s/releases/k9s_linux_arm64.deb
+sudo apt install k9s_linux_amd64.deb
+
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+sudo dpkg -i minikube_latest_amd64.deb
