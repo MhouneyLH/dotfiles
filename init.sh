@@ -50,3 +50,6 @@ sudo apt install k9s_linux_amd64.deb
 
 curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
 sudo dpkg -i minikube_latest_amd64.deb
+
+# install uv for python package management
+curl -LsSf https://astral.sh/uv/install.sh | sh
