@@ -15,6 +15,7 @@
 # download deb from here: https://obsidian.md/download
 # had some quirks with network configuration outside of home (after some investigation, NetworkManager configurations and a reboot, it somehow started working again) + also installed firmware stuff
 # add ssh key for working with github in ~/.ssh/github
+# unityhub: https://docs.unity3d.com/hub/manual/InstallHub.html#install-hub-linux
 
 sudo su
 sudo adduser -aG sudo lucas-dev
