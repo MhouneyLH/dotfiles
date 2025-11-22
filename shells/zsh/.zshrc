@@ -152,6 +152,9 @@ alias h="history"
 alias cat="batcat"
 alias uncorrupt_steam="mv ~/.steam ~/.steam.bak && mv ~/.local/share/Steam ~/.local/share/Steam.bak"
 alias dpsn="docker ps --format '{{.Names}}'" # only get names of the running services
+alias v="vim"
+alias dc="docker compose"
+alias dcf="docker compose -f"
 
 # system
 alias cleanup="sudo apt autoremove && sudo apt autoclean"
