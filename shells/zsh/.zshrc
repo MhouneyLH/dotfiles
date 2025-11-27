@@ -149,7 +149,7 @@ alias ....="cd ...."
 alias .....="cd ....."
 alias grep="grep --color=auto"
 alias h="history"
-alias cat="batcat"
+#alias cat="batcat"
 alias uncorrupt_steam="mv ~/.steam ~/.steam.bak && mv ~/.local/share/Steam ~/.local/share/Steam.bak"
 alias dpsn="docker ps --format '{{.Names}}'" # only get names of the running services
 alias v="vim"

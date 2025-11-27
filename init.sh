@@ -54,3 +54,8 @@ sudo dpkg -i minikube_latest_amd64.deb
 
 # install uv for python package management
 curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# see here for installing qemu: https://github.com/MhouneyLH/zephyr_fhLUG/blob/master/scripts/setup_virtual_machine_management.sh
+# create default network for qemu when starting
+sudo virsh net-autostart default
+
