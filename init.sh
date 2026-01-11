@@ -63,3 +63,7 @@ sudo virsh net-autostart default
 # create directory so that unity can save its preferences (somehow it cannot create this directory himself)
 # see here for more information: https://www.reddit.com/r/Unity3D/comments/1cqiney/comment/lund5p2/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
 mkdir -p ~/.local/share/unity3d
+
+
+npm i -g pnpm
+sudo apt-get install blender
