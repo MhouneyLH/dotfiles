@@ -67,3 +67,6 @@ mkdir -p ~/.local/share/unity3d
 
 npm i -g pnpm
 sudo apt-get install blender
+
+sudo apt-get install lazygit
+sudo apt-get install lazygit
