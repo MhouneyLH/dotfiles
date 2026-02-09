@@ -1,0 +1,114 @@
+---
+- name: Install Brave browser
+  block:
+    - name: Add Brave GPG key
+      ansible.builtin.get_url:
+        url: https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+        dest: /usr/share/keyrings/brave-browser-archive-keyring.gpg
+        mode: "0644"
+
+    - name: Add Brave repository
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg] https://brave-browser-apt-release.s3.brave.com/ stable main"
+        filename: brave-browser-release
+        state: present
+
+    - name: Install Brave browser
+      ansible.builtin.apt:
+        name: brave-browser
+        state: present
+        update_cache: true
+  tags: applications_browser
+
+- name: Download and install GitKraken
+  block:
+    - name: Download GitKraken .deb package
+      ansible.builtin.get_url:
+        url: https://release.gitkraken.com/linux/gitkraken-amd64.deb
+        dest: /tmp/gitkraken-amd64.deb
+        mode: "0644"
+
+    - name: Install GitKraken
+      ansible.builtin.apt:
+        deb: /tmp/gitkraken-amd64.deb
+        state: present
+
+    - name: Clean up GitKraken installer
+      ansible.builtin.file:
+        path: /tmp/gitkraken-amd64.deb
+        state: absent
+  tags: applications_git
+
+- name: Download and install Obsidian
+  block:
+    - name: Get latest Obsidian release
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest
+        return_content: true
+      register: obsidian_latest
+
+    - name: Set Obsidian download URL
+      ansible.builtin.set_fact:
+        obsidian_url: "{{ obsidian_latest.json.assets | selectattr('name', 'match', '.*amd64.deb$') | map(attribute='browser_download_url') | first }}"
+
+    - name: Download Obsidian .deb package
+      ansible.builtin.get_url:
+        url: "{{ obsidian_url }}"
+        dest: /tmp/obsidian-amd64.deb
+        mode: "0644"
+
+    - name: Install Obsidian
+      ansible.builtin.apt:
+        deb: /tmp/obsidian-amd64.deb
+        state: present
+
+    - name: Clean up Obsidian installer
+      ansible.builtin.file:
+        path: /tmp/obsidian-amd64.deb
+        state: absent
+  tags: applications_notes
+
+- name: Install Blender
+  ansible.builtin.apt:
+    name: blender
+    state: present
+  tags: applications_3d
+
+# this is needed as some Unity3D installations expect to have a config file in this location
+# when missing, no Unity3D preferences are saved and the preferencse have to be set up every time the editor is launched
+- name: Create Unity3D preferences directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/share/unity3d"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: applications_gamedev
+
+- name: Install VS Code
+  block:
+    - name: Add VS Code GPG key
+      ansible.builtin.get_url:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        dest: /tmp/microsoft.asc
+        mode: "0644"
+
+    - name: Add VS Code GPG key to keyring
+      ansible.builtin.shell:
+        cmd: gpg --dearmor < /tmp/microsoft.asc > /usr/share/keyrings/packages.microsoft.gpg
+        creates: /usr/share/keyrings/packages.microsoft.gpg
+
+    - name: Add VS Code repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+        filename: vscode
+        state: present
+
+    - name: Install VS Code
+      ansible.builtin.apt:
+        name: code
+        state: present
+        update_cache: true
+  tags: applications_editor
