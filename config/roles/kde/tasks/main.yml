@@ -1,0 +1,172 @@
+---
+- name: Check if KDE config directory exists
+  ansible.builtin.stat:
+    path: "{{ user_home }}/.config"
+  register: kde_config_dir
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_check
+
+- name: Backup existing KDE config files
+  ansible.builtin.copy:
+    src: "{{ user_home }}/.config/{{ item }}"
+    dest: "{{ user_home }}/.config/{{ item }}.backup"
+    remote_src: true
+    force: false # Only backup if backup doesn't exist
+  become_user: "{{ user_name }}"
+  become: true
+  loop:
+    - kdeglobals
+    - kwinrc
+    - kcminputrc
+    - kxkbrc
+    - kglobalshortcutsrc
+    - powermanagementprofilesrc
+    - plasma-org.kde.plasma.desktop-appletsrc
+    - konsolerc
+  ignore_errors: true # Files might not exist
+  tags: kde_backup
+
+- name: Remove existing KDE config files
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config/{{ item }}"
+    state: absent
+  become_user: "{{ user_name }}"
+  become: true
+  loop:
+    - kdeglobals
+    - kwinrc
+    - kcminputrc
+    - kxkbrc
+    - kglobalshortcutsrc
+    - powermanagementprofilesrc
+    - plasma-org.kde.plasma.desktop-appletsrc
+    - konsolerc
+  tags: kde_config
+
+- name: Create symlinks to KDE config files in dotfiles repo
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/init/roles/kde/files/{{ item }}"
+    dest: "{{ user_home }}/.config/{{ item }}"
+    state: link
+    force: true
+  become_user: "{{ user_name }}"
+  become: true
+  loop:
+    - kdeglobals # Theme, colors, fonts
+    - kwinrc # Window manager settings (includes desktop effects)
+    - kcminputrc # Mouse and touchpad settings
+    - kxkbrc # Keyboard layout
+    - kglobalshortcutsrc # Global shortcuts
+    - powermanagementprofilesrc # Power management profiles
+    - plasma-org.kde.plasma.desktop-appletsrc # Panel/taskbar and widgets
+    - konsolerc # Konsole terminal settings
+  tags: kde_config
+
+- name: Set natural scrolling for touchpad
+  community.general.ini_file:
+    path: "{{ user_home }}/.config/kcminputrc"
+    section: Libinput/1149/1133/SYNA8016:00 06CB:046D Touchpad
+    option: NaturalScroll
+    value: "true"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0644"
+    create: true
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_touchpad
+  # Note: Device ID may differ - check your kcminputrc file
+
+- name: Configure keyboard repeat rate
+  community.general.ini_file:
+    path: "{{ user_home }}/.config/kcminputrc"
+    section: Keyboard
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    create: true
+  become_user: "{{ user_name }}"
+  become: true
+  loop:
+    - { key: "RepeatDelay", value: "300" }
+    - { key: "RepeatRate", value: "25" }
+  tags: kde_keyboard
+
+- name: Create konsole profiles directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/share/konsole"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_konsole
+
+- name: Backup existing konsole profiles
+  ansible.builtin.copy:
+    src: "{{ user_home }}/.local/share/konsole/"
+    dest: "{{ user_home }}/.local/share/konsole.backup/"
+    remote_src: true
+    force: false
+  become_user: "{{ user_name }}"
+  become: true
+  ignore_errors: true
+  tags: kde_konsole
+
+- name: Remove existing konsole profiles directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/share/konsole"
+    state: absent
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_konsole
+
+- name: Create symlink to konsole profiles in dotfiles repo
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole"
+    dest: "{{ user_home }}/.local/share/konsole"
+    state: link
+    force: true
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_konsole
+
+- name: Restart KDE Plasma to apply changes
+  ansible.builtin.command: kquitapp5 plasmashell && kstart5 plasmashell
+  become_user: "{{ user_name }}"
+  environment:
+    DISPLAY: :0
+  ignore_errors: true
+  tags: kde_restart
+  failed_when: false # Don't fail if command doesn't work (e.g. not running in KDE session)
+
+- name: Print KDE configuration instructions
+  ansible.builtin.debug:
+    msg: |
+      KDE Configuration Notes:
+      - Config files are now symlinked to {{ git_repos_path }}/dotfiles/init/roles/kde/files/
+      - Konsole profiles are symlinked from {{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole/
+      - Any changes made through KDE or Konsole settings will automatically update the files in your dotfiles repo
+      - Remember to commit changes to git after modifying settings
+      - Backups of original files are saved with .backup extension
+
+      To initially populate roles/kde/files/ on a new machine:
+      cp -a ~/.config/kdeglobals \
+        ~/.config/kwinrc \
+        ~/.config/kcminputrc \
+        ~/.config/kxkbrc \
+        ~/.config/kglobalshortcutsrc \
+        ~/.config/powermanagementprofilesrc \
+        ~/.config/plasma-org.kde.plasma.desktop-appletsrc \
+        ~/.config/konsolerc \
+        "{{ git_repos_path }}/dotfiles/init/roles/kde/files/"
+
+      mkdir -p "{{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole"
+      cp -a ~/.local/share/konsole/* "{{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole/"
+
+      For touchpad settings, check device ID in ~/.config/kcminputrc
+      and update the playbook accordingly.
+  tags: kde_info
