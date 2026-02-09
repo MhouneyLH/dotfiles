@@ -1,0 +1,72 @@
+---
+- name: Install nala package manager
+  ansible.builtin.apt:
+    name: nala # modern apt frontend with better dev-xp and performance
+    state: present
+  tags: base_packages
+
+- name: Install base system packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - wget
+      - git
+      - vim
+      - rename
+      - gh # GitHub CLI
+      - build-essential # Compilers and build tools
+      - ca-certificates # SSL certificates
+      - gnupg # GPG for package signing
+      - lsb-release
+    state: present
+    update_cache: true
+  tags: base_packages
+
+- name: Ensure common directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  loop:
+    - "{{ git_repos_path }}"
+    - "{{ user_home }}/.local/bin"
+    - "{{ user_home }}/.local/share"
+    - "{{ user_home }}/.config"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: base_directories
+
+- name: Set timezone
+  community.general.timezone:
+    name: Europe/Vienna # Adjust for Linz, Austria
+  become: true
+  tags: base_config
+
+- name: Configure locale
+  community.general.locale_gen:
+    name: en_US.UTF-8
+    state: present
+  become: true
+  tags: base_config
+
+- name: Configure git user name
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_user_name }}"
+  become_user: "{{ user_name }}"
+  become: true
+  when: git_user_name is defined
+  tags: base_git
+
+- name: Configure git user email
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_user_email }}"
+  become_user: "{{ user_name }}"
+  become: true
+  when: git_user_email is defined
+  tags: base_git
