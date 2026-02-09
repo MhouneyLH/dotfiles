@@ -1,0 +1,13 @@
+---
+all:
+  hosts:
+    localhost:
+      # do not use ssh, run directly
+      ansible_connection: local
+      ansible_python_interpreter: /usr/bin/python3
+  
+  vars:
+    user_name: lucas-dev
+    user_home: "/home/{{ user_name }}"
+    dotfiles_repo: "https://github.com/MhouneyLH/dotfiles.git"
+    git_repos_path: "{{ user_home }}/Documents/git"
