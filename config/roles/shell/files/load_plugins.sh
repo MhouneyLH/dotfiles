@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Define the list of repositories to clone
 REPOS=(
