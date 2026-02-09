@@ -1,0 +1,25 @@
+# Ansible
+*.retry
+.ansible
+.cache/
+
+# Environment variables (contains personal information)
+.env
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Backup files created during extraction
+roles/kde/files/*.bak

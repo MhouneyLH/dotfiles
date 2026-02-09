@@ -1,0 +1,66 @@
+---
+- name: Configure KDE Debian 13 System
+  hosts: localhost
+  become: true
+
+  vars:
+    configure_kde: true
+    configure_development: true
+
+  pre_tasks:
+    - name: Ensure user exists and is in sudo group
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        groups: sudo
+        append: true
+        shell: /bin/bash # will change to zsh later
+      tags: always
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600 # only update if cache is older than 1 hour
+      tags: always
+
+  roles:
+    # Base system packages and configuration
+    - role: base
+      tags: base
+
+      # Zsh, oh-my-zsh, and dotfiles
+    - role: shell
+      tags: shell
+
+      # KDE-specific configurations
+    - role: kde
+      tags: kde
+      when: configure_kde
+
+      # Development tools (git, docker, nodejs, etc.)
+    - role: development
+      tags: development
+      when: configure_development
+
+      # QEMU, minikube, etc.
+    - role: virtualization
+      tags: virtualization
+
+      # GitKraken, Obsidian, Unity Hub, etc.
+    - role: applications
+      tags: applications
+
+  post_tasks:
+    - name: Final message
+      ansible.builtin.debug:
+        msg: |
+          ================================================
+          System configuration complete!
+
+          Manual steps still required:
+          - Add SSH key to ~/.ssh/github
+          - Configure Brave sync
+          - Configure GitKraken sync
+          - Configure VSCode sync (Settings + Extensions)
+
+          Don't forget to reboot so that all changes are really applied!
+          ================================================
