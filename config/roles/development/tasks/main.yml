@@ -1,0 +1,135 @@
+---
+- name: Install Node.js and npm
+  ansible.builtin.apt:
+    name:
+      - nodejs
+      - npm
+    state: present
+  tags: development_nodejs
+
+- name: Install pnpm globally
+  community.general.npm:
+    name: pnpm
+    version: latest-10
+    global: true
+  tags: development_nodejs
+
+- name: Setup Docker
+  block:
+    - name: Add Docker GPG key
+      ansible.builtin.get_url:
+        url: https://download.docker.com/linux/debian/gpg
+        dest: /tmp/docker.asc
+        mode: "0644"
+
+    - name: Add Docker GPG key to keyring
+      ansible.builtin.shell:
+        cmd: gpg --dearmor < /tmp/docker.asc > /usr/share/keyrings/docker-archive-keyring.gpg
+        creates: /usr/share/keyrings/docker-archive-keyring.gpg
+
+    - name: Get system architecture
+      ansible.builtin.command: dpkg --print-architecture
+      register: system_arch
+      changed_when: false
+
+    - name: Get distribution codename
+      ansible.builtin.command: lsb_release -cs
+      register: distro_codename
+      changed_when: false
+
+    - name: Add Docker repository
+      ansible.builtin.apt_repository:
+        repo: "deb [arch={{ system_arch.stdout }} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian {{ distro_codename.stdout }} stable"
+        filename: docker
+        state: present
+
+    - name: Install Docker packages
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: true
+
+    - name: Create docker group
+      ansible.builtin.group:
+        name: docker
+        state: present
+
+    - name: Add user to docker group
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        groups: docker
+        append: true
+
+    - name: Enable and start Docker service
+      ansible.builtin.systemd:
+        name: docker
+        enabled: true
+        state: started
+  tags: development_docker
+
+- name: Install Kubernetes tools
+  block:
+    - name: Download k9s
+      ansible.builtin.get_url:
+        url: "https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb"
+        dest: /tmp/k9s_linux_amd64.deb
+        mode: "0644"
+
+    - name: Install k9s
+      ansible.builtin.apt:
+        deb: /tmp/k9s_linux_amd64.deb
+        state: present
+
+    - name: Clean up k9s installer
+      ansible.builtin.file:
+        path: /tmp/k9s_linux_amd64.deb
+        state: absent
+
+    - name: Download minikube
+      ansible.builtin.get_url:
+        url: https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+        dest: /tmp/minikube_latest_amd64.deb
+        mode: "0644"
+
+    - name: Install minikube
+      ansible.builtin.apt:
+        deb: /tmp/minikube_latest_amd64.deb
+        state: present
+
+    - name: Clean up minikube installer
+      ansible.builtin.file:
+        path: /tmp/minikube_latest_amd64.deb
+        state: absent
+  tags: development_kubernetes
+
+- name: Install uv Python package manager
+  block:
+    - name: Download uv installer
+      ansible.builtin.get_url:
+        url: https://astral.sh/uv/install.sh
+        dest: /tmp/uv-install.sh
+        mode: "0755"
+
+    - name: Install uv
+      ansible.builtin.shell:
+        cmd: /tmp/uv-install.sh
+      become_user: "{{ user_name }}"
+      args:
+        creates: "{{ user_home }}/.cargo/bin/uv"
+
+    - name: Clean up uv installer
+      ansible.builtin.file:
+        path: /tmp/uv-install.sh
+        state: absent
+  tags: development_python
+
+- name: Install lazygit
+  ansible.builtin.apt:
+    name: lazygit
+    state: present
+  tags: development_git
