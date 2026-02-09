@@ -1,0 +1,50 @@
+---
+- name: Install QEMU/KVM packages
+  ansible.builtin.apt:
+    name:
+      - qemu-system
+      - qemu-kvm # Kernel-based Virtual Machine support
+      - libvirt-daemon-system
+      - libvirt-clients
+      - bridge-utils
+      - virt-manager
+      - ovmf # UEFI support
+    state: present
+  tags: qemu_install
+
+- name: Add user to libvirt group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: libvirt,kvm
+    append: true
+  tags: qemu_config
+
+- name: Enable and start libvirtd service
+  ansible.builtin.systemd:
+    name: libvirtd
+    enabled: true
+    state: started
+  tags: qemu_config
+
+- name: Check if default network is active
+  ansible.builtin.command: virsh net-list --all
+  register: virsh_networks
+  changed_when: false
+  tags: qemu_network
+
+- name: Define default network if not exists
+  ansible.builtin.command: virsh net-define /usr/share/libvirt/networks/default.xml
+  when: "'default' not in virsh_networks.stdout"
+  tags: qemu_network
+  ignore_errors: true
+
+- name: Start default network
+  ansible.builtin.command: virsh net-start default
+  when: "'default' not in virsh_networks.stdout or 'inactive' in virsh_networks.stdout"
+  tags: qemu_network
+  ignore_errors: true
+
+- name: Autostart default network
+  ansible.builtin.command: virsh net-autostart default
+  tags: qemu_network
+  ignore_errors: true
