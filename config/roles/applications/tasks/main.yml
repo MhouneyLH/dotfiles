@@ -87,6 +87,13 @@
   become: true
   tags: applications_gamedev
 
+- name: Check if VS Code is already installed
+  ansible.builtin.command: dpkg-query -W -f='${Status}' code
+  register: vscode_check
+  failed_when: false # don't fail if the package is not found, we will check the output instead
+  changed_when: false # this command doesn't change the system -> don't report as changed
+  tags: applications_editor
+
 - name: Install VS Code
   block:
     - name: Add VS Code GPG key
@@ -111,4 +118,5 @@
         name: code
         state: present
         update_cache: true
+  when: vscode_check.rc != 0 or 'install ok installed' not in vscode_check.stdout
   tags: applications_editor

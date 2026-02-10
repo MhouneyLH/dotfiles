@@ -23,7 +23,7 @@ cd config
 # and edit with information
 cp .env.example .env
 
-./install.sh
+sudo ./install.sh
 ```
 
 ## Contributing

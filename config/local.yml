@@ -8,6 +8,12 @@
     configure_development: true
 
   pre_tasks:
+    - name: Fix conflicting VS Code repository configuration
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/vscode.list
+        state: absent
+      tags: always
+
     - name: Ensure user exists and is in sudo group
       ansible.builtin.user:
         name: "{{ user_name }}"

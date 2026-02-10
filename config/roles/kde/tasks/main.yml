@@ -50,6 +50,7 @@
     dest: "{{ user_home }}/.config/{{ item }}"
     state: link
     force: true
+    follow: false # dont try to modify the target file, just replace the symlink if it exists
   become_user: "{{ user_name }}"
   become: true
   loop:

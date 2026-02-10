@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# Load environment variables if .env file exists
 if [ -f .env ]; then
     echo "Loading environment variables from .env..."
     source .env
