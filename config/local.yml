@@ -67,6 +67,7 @@
           - Configure Brave sync
           - Configure GitKraken sync
           - Configure VSCode sync (Settings + Extensions)
+          - Switch to the correct session manager in the login screen (X11 instead of Wayland is still my )
 
           Don't forget to reboot so that all changes are really applied!
           ================================================

@@ -102,7 +102,7 @@ RandomSaturationRange=100
 
 [General]
 Anchor=0.5,0.5
-Blur=false
+Blur=true
 ColorRandomization=false
 Description=Breeze
 FillStyle=Tile

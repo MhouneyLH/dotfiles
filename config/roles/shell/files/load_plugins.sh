@@ -27,13 +27,13 @@ done
 ZSHRC="$HOME/.zshrc"
 PLUGINS_LINE="plugins=(git zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-bat)"
 if grep -q "^plugins=" "$ZSHRC"; then
-    sed -i '' "s/^plugins=.*/$PLUGINS_LINE/" "$ZSHRC"
+    sed -i "s/^plugins=.*/$PLUGINS_LINE/" "$ZSHRC"
 else
     echo "$PLUGINS_LINE" >> "$ZSHRC"
 fi
 
 # Reload Zsh configuration
-source "$ZSHRC"
+source "$ZSHRC" 2>/dev/null || true
 
 echo "\nDone! Add the following plugins to your .zshrc file:"
 echo "plugins=(git $(basename -a "${PLUGINS[@]}"))"

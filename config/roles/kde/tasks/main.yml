@@ -46,7 +46,7 @@
 
 - name: Create symlinks to KDE config files in dotfiles repo
   ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/init/roles/kde/files/{{ item }}"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/kde/files/{{ item }}"
     dest: "{{ user_home }}/.config/{{ item }}"
     state: link
     force: true
@@ -127,7 +127,7 @@
 
 - name: Create symlink to konsole profiles in dotfiles repo
   ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/kde/files/konsole"
     dest: "{{ user_home }}/.local/share/konsole"
     state: link
     force: true
@@ -148,8 +148,8 @@
   ansible.builtin.debug:
     msg: |
       KDE Configuration Notes:
-      - Config files are now symlinked to {{ git_repos_path }}/dotfiles/init/roles/kde/files/
-      - Konsole profiles are symlinked from {{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole/
+      - Config files are now symlinked to {{ git_repos_path }}/dotfiles/config/roles/kde/files/
+      - Konsole profiles are symlinked from {{ git_repos_path }}/dotfiles/config/roles/kde/files/konsole/
       - Any changes made through KDE or Konsole settings will automatically update the files in your dotfiles repo
       - Remember to commit changes to git after modifying settings
       - Backups of original files are saved with .backup extension
@@ -163,10 +163,10 @@
         ~/.config/powermanagementprofilesrc \
         ~/.config/plasma-org.kde.plasma.desktop-appletsrc \
         ~/.config/konsolerc \
-        "{{ git_repos_path }}/dotfiles/init/roles/kde/files/"
+        "{{ git_repos_path }}/dotfiles/config/roles/kde/files/"
 
-      mkdir -p "{{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole"
-      cp -a ~/.local/share/konsole/* "{{ git_repos_path }}/dotfiles/init/roles/kde/files/konsole/"
+      mkdir -p "{{ git_repos_path }}/dotfiles/config/roles/kde/files/konsole"
+      cp -a ~/.local/share/konsole/* "{{ git_repos_path }}/dotfiles/config/roles/kde/files/konsole/"
 
       For touchpad settings, check device ID in ~/.config/kcminputrc
       and update the playbook accordingly.

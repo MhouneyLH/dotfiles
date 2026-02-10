@@ -343,7 +343,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][3][Applets][8][Configuration]
-PreloadWeight=75
+PreloadWeight=80
 SystrayContainmentId=9
 
 [Containments][3][General]
@@ -359,8 +359,8 @@ immutability=1
 lastScreen=0
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=436
-popupWidth=436
+popupHeight=440
+popupWidth=440
 wallpaperplugin=org.kde.image
 
 [Containments][9][Applets][10]
@@ -380,7 +380,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][9][Applets][129][Configuration]
-PreloadWeight=60
+PreloadWeight=70
 
 [Containments][9][Applets][13]
 immutability=1
