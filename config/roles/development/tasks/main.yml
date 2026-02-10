@@ -1,4 +1,7 @@
 ---
+- name: Include custom keyboard tasks
+  ansible.builtin.include_tasks: custom_keyboard.yml
+
 - name: Install Node.js and npm
   ansible.builtin.apt:
     name:

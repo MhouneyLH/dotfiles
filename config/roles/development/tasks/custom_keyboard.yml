@@ -1,0 +1,120 @@
+---
+- name: Install QMK firmware dependencies
+  ansible.builtin.apt:
+    name:
+      - git
+      - python3
+      - python3-pip
+      - pipx
+      - gcc
+      - unzip
+      - wget
+      - zip
+      - gcc-avr
+      - binutils-avr
+      - avr-libc
+      - dfu-programmer
+      - dfu-util
+      - gcc-arm-none-eabi
+      - binutils-arm-none-eabi
+      - libnewlib-arm-none-eabi
+      - libusb-dev
+    state: present
+  tags: development_qmk
+
+- name: Install QMK CLI via pipx
+  community.general.pipx:
+    name: qmk
+    state: present
+  become_user: "{{ user_name }}"
+  tags: development_qmk
+
+- name: Create QMK udev rules
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/50-qmk.rules
+    content: |
+      # Atmel ATMega32U4
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2ff4", TAG+="uaccess", RUN{builtin}+="uaccess"
+      # Atmel USBKEY AT90USB1287
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2ffb", TAG+="uaccess", RUN{builtin}+="uaccess"
+      # Atmel ATMega32U2
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="03eb", ATTRS{idProduct}=="2ff0", TAG+="uaccess", RUN{builtin}+="uaccess"
+      # STM32 DFU
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", TAG+="uaccess", RUN{builtin}+="uaccess"
+      # BootloadHID
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05df", TAG+="uaccess", RUN{builtin}+="uaccess"
+      # USBAspLoader
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="05dc", TAG+="uaccess", RUN{builtin}+="uaccess"
+      # ModemManager
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0036", ENV{ID_MM_DEVICE_IGNORE}="1", TAG+="uaccess", RUN{builtin}+="uaccess"
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", ATTRS{idProduct}=="0037", ENV{ID_MM_DEVICE_IGNORE}="1", TAG+="uaccess", RUN{builtin}+="uaccess"
+      # Caterina (Pro Micro)
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="2a03", TAG+="uaccess", RUN{builtin}+="uaccess"
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", TAG+="uaccess", RUN{builtin}+="uaccess"
+    mode: "0644"
+  notify: reload udev rules
+  tags: development_qmk
+
+- name: Setup QMK firmware directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/qmk_firmware"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  tags: development_qmk
+
+- name: Run QMK setup
+  ansible.builtin.shell:
+    cmd: "{{ user_home }}/.local/bin/qmk setup -y"
+  become_user: "{{ user_name }}"
+  args:
+    creates: "{{ user_home }}/qmk_firmware/.git"
+  tags: development_qmk
+
+- name: Install VIAL dependencies
+  ansible.builtin.apt:
+    name:
+      - libfuse2
+      - libusb-1.0-0
+    state: present
+  tags: development_vial
+
+- name: Create VIAL directory
+  ansible.builtin.file:
+    path: /opt/vial
+    state: directory
+    mode: "0755"
+  tags: development_vial
+
+- name: Download VIAL AppImage
+  ansible.builtin.get_url:
+    url: https://github.com/vial-kb/vial-gui/releases/download/v0.7.5/Vial-v0.7.5-x86_64.AppImage
+    dest: /opt/vial/Vial.AppImage
+    mode: "0755"
+  tags: development_vial
+
+- name: Create symbolic link for VIAL
+  ansible.builtin.file:
+    src: /opt/vial/Vial.AppImage
+    dest: /usr/local/bin/vial
+    state: link
+  tags: development_vial
+
+- name: Create desktop entry for VIAL
+  ansible.builtin.copy:
+    dest: /usr/share/applications/vial.desktop
+    content: |
+      [Desktop Entry]
+      Version=1.0
+      Type=Application
+      Name=VIAL
+      Comment=Keyboard configuration tool for QMK
+      Exec=/opt/vial/Vial.AppImage
+      Icon=input-keyboard
+      Categories=Utility;Development;
+      Terminal=false
+      StartupWMClass=vial
+    mode: "0644"
+  tags: development_vial

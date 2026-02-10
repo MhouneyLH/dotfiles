@@ -29,8 +29,8 @@ immutability=1
 lastScreen=1
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=432
-popupWidth=432
+popupHeight=436
+popupWidth=436
 wallpaperplugin=org.kde.image
 
 [Containments][104][Applets][105]
@@ -73,6 +73,9 @@ plugin=org.kde.plasma.notifications
 immutability=1
 plugin=org.kde.plasma.volume
 
+[Containments][104][Applets][114][Configuration]
+PreloadWeight=55
+
 [Containments][104][Applets][114][Configuration][General]
 migrated=true
 
@@ -103,7 +106,7 @@ immutability=1
 plugin=org.kde.plasma.bluetooth
 
 [Containments][104][Applets][119][Configuration]
-PreloadWeight=65
+PreloadWeight=100
 
 [Containments][104][Applets][120]
 immutability=1
@@ -115,6 +118,9 @@ PreloadWeight=39
 [Containments][104][Applets][129]
 immutability=1
 plugin=org.kde.plasma.battery
+
+[Containments][104][Applets][129][Configuration]
+PreloadWeight=60
 
 [Containments][104][ConfigDialog]
 DialogHeight=540
@@ -167,8 +173,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][3][Applets][4][Configuration]
 PreloadWeight=100
-popupHeight=520
-popupWidth=659
+popupHeight=536
+popupWidth=675
 
 [Containments][3][Applets][4][Configuration][General]
 favoritesPortedToKAstats=true
@@ -343,7 +349,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][3][Applets][8][Configuration]
-PreloadWeight=80
+PreloadWeight=85
 SystrayContainmentId=9
 
 [Containments][3][General]
@@ -359,8 +365,8 @@ immutability=1
 lastScreen=0
 location=3
 plugin=org.kde.plasma.private.systemtray
-popupHeight=440
-popupWidth=440
+popupHeight=444
+popupWidth=444
 wallpaperplugin=org.kde.image
 
 [Containments][9][Applets][10]
@@ -380,7 +386,7 @@ immutability=1
 plugin=org.kde.plasma.battery
 
 [Containments][9][Applets][129][Configuration]
-PreloadWeight=70
+PreloadWeight=100
 
 [Containments][9][Applets][13]
 immutability=1
@@ -472,8 +478,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][99][Applets][100][Configuration]
 PreloadWeight=100
-popupHeight=520
-popupWidth=659
+popupHeight=532
+popupWidth=671
 
 [Containments][99][Applets][100][Configuration][General]
 favoritesPortedToKAstats=true
@@ -503,7 +509,7 @@ immutability=1
 plugin=org.kde.plasma.systemtray
 
 [Containments][99][Applets][103][Configuration]
-PreloadWeight=55
+PreloadWeight=60
 SystrayContainmentId=104
 
 [Containments][99][Applets][121]

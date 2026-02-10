@@ -1,0 +1,5 @@
+---
+- name: reload udev rules
+  ansible.builtin.systemd:
+    name: udev
+    state: reloaded
