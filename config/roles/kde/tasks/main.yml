@@ -25,6 +25,7 @@
     - powerdevilrc
     - plasma-org.kde.plasma.desktop-appletsrc
     - konsolerc
+    - spectaclerc
   ignore_errors: true # Files might not exist
   tags: kde_backup
 
@@ -44,6 +45,7 @@
     - powerdevilrc
     - plasma-org.kde.plasma.desktop-appletsrc
     - konsolerc
+    - spectaclerc
   tags: kde_config
 
 - name: Create symlinks to KDE config files in dotfiles repo
@@ -65,6 +67,7 @@
     - powerdevilrc # Active power profile (performance/balanced/power-saver)
     - plasma-org.kde.plasma.desktop-appletsrc # Panel/taskbar and widgets
     - konsolerc # Konsole terminal settings
+    - spectaclerc # Screenshot tool settings
   tags: kde_config
 
 - name: Set natural scrolling for touchpad
@@ -138,6 +141,17 @@
   become: true
   tags: kde_konsole
 
+- name: Create Screenshots directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/Pictures/Screenshots"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_spectacle
+
 - name: Restart KDE Plasma to apply changes
   ansible.builtin.command: kquitapp5 plasmashell && kstart5 plasmashell
   become_user: "{{ user_name }}"
@@ -164,8 +178,10 @@
         ~/.config/kxkbrc \
         ~/.config/kglobalshortcutsrc \
         ~/.config/powermanagementprofilesrc \
+        ~/.config/powerdevilrc \
         ~/.config/plasma-org.kde.plasma.desktop-appletsrc \
         ~/.config/konsolerc \
+        ~/.config/spectaclerc \
         "{{ git_repos_path }}/dotfiles/config/roles/kde/files/"
 
       mkdir -p "{{ git_repos_path }}/dotfiles/config/roles/kde/files/konsole"

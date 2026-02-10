@@ -135,6 +135,7 @@
   tags: development_git
 
 - name: Install JetBrains Toolbox
+  tags: development_jetbrains
   block:
     - name: Download JetBrains Toolbox
       ansible.builtin.get_url:
@@ -182,7 +183,6 @@
       ansible.builtin.file:
         path: /tmp/jetbrains-toolbox.tar.gz
         state: absent
-  tags: development_jetbrains
 
 - name: Ensure .ssh directory exists
   ansible.builtin.file:

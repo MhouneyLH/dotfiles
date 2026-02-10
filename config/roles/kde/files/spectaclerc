@@ -1,0 +1,16 @@
+[General]
+autoSaveImage=true
+clipboardGroup=PostScreenshotCopyImage
+launchAction=UseLastUsedCapturemode
+useReleaseToCapture=true
+
+[GuiConfig]
+captureMode=0
+
+[ImageSave]
+lastImageSaveLocation=file:///home/lucas-dev/Pictures/Screenshots
+translatedScreenshotsFolder=Screenshots
+
+[VideoSave]
+preferredVideoFormat=0
+translatedScreencastsFolder=Screencasts
