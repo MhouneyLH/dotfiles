@@ -64,4 +64,5 @@
   ansible.builtin.user:
     name: "{{ user_name }}"
     shell: /usr/bin/zsh
+  become: true
   tags: shell_change
