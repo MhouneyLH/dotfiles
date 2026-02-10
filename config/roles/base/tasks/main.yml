@@ -1,4 +1,14 @@
 ---
+- name: Enable non-free and contrib repositories
+  ansible.builtin.apt_repository:
+    repo: "{{ item }}"
+    state: present
+  loop:
+    - "deb http://deb.debian.org/debian bookworm main contrib non-free non-free-firmware"
+    - "deb http://deb.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware"
+    - "deb http://deb.debian.org/debian bookworm-updates main contrib non-free non-free-firmware"
+  tags: base_repositories
+
 - name: Install nala package manager
   ansible.builtin.apt:
     name: nala # modern apt frontend with better dev-xp and performance
