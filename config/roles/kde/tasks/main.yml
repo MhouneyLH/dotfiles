@@ -22,6 +22,7 @@
     - kxkbrc
     - kglobalshortcutsrc
     - powermanagementprofilesrc
+    - powerdevilrc
     - plasma-org.kde.plasma.desktop-appletsrc
     - konsolerc
   ignore_errors: true # Files might not exist
@@ -40,6 +41,7 @@
     - kxkbrc
     - kglobalshortcutsrc
     - powermanagementprofilesrc
+    - powerdevilrc
     - plasma-org.kde.plasma.desktop-appletsrc
     - konsolerc
   tags: kde_config
@@ -60,6 +62,7 @@
     - kxkbrc # Keyboard layout
     - kglobalshortcutsrc # Global shortcuts
     - powermanagementprofilesrc # Power management profiles
+    - powerdevilrc # Active power profile (performance/balanced/power-saver)
     - plasma-org.kde.plasma.desktop-appletsrc # Panel/taskbar and widgets
     - konsolerc # Konsole terminal settings
   tags: kde_config
