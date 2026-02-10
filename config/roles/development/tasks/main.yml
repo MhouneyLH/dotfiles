@@ -2,6 +2,9 @@
 - name: Include custom keyboard tasks
   ansible.builtin.include_tasks: custom_keyboard.yml
 
+- name: Include Balena Etcher tasks
+  ansible.builtin.include_tasks: balena_etcher.yml
+
 - name: Install Node.js and npm
   ansible.builtin.apt:
     name:
