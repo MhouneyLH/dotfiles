@@ -1,6 +1,10 @@
 [Keyboard]
 RepeatDelay=300
-RepeatRate=50
+RepeatRate=25
+
+[Libinput/1149/1133/SYNA8016:00 06CB:046D Touchpad]
+NaturalScroll=true
 
 [Mouse]
 X11LibInputXAccelProfileFlat=true
+XLbInptPointerAcceleration=0.3
