@@ -134,6 +134,56 @@
     state: present
   tags: development_git
 
+- name: Install JetBrains Toolbox
+  block:
+    - name: Download JetBrains Toolbox
+      ansible.builtin.get_url:
+        url: https://download.jetbrains.com/toolbox/jetbrains-toolbox-2.5.2.35332.tar.gz
+        dest: /tmp/jetbrains-toolbox.tar.gz
+        mode: "0644"
+
+    - name: Create JetBrains Toolbox directory
+      ansible.builtin.file:
+        path: /opt/jetbrains-toolbox
+        state: directory
+        mode: "0755"
+
+    - name: Extract JetBrains Toolbox
+      ansible.builtin.unarchive:
+        src: /tmp/jetbrains-toolbox.tar.gz
+        dest: /opt/jetbrains-toolbox
+        remote_src: true
+        extra_opts:
+          - --strip-components=1
+
+    - name: Create symbolic link for JetBrains Toolbox
+      ansible.builtin.file:
+        src: /opt/jetbrains-toolbox/jetbrains-toolbox
+        dest: /usr/local/bin/jetbrains-toolbox
+        state: link
+
+    - name: Create desktop entry for JetBrains Toolbox
+      ansible.builtin.copy:
+        dest: /usr/share/applications/jetbrains-toolbox.desktop
+        content: |
+          [Desktop Entry]
+          Version=1.0
+          Type=Application
+          Name=JetBrains Toolbox
+          Icon=jetbrains-toolbox
+          Exec=/opt/jetbrains-toolbox/jetbrains-toolbox
+          Comment=JetBrains Toolbox App
+          Categories=Development;IDE;
+          Terminal=false
+          StartupWMClass=jetbrains-toolbox
+        mode: "0644"
+
+    - name: Clean up JetBrains Toolbox installer
+      ansible.builtin.file:
+        path: /tmp/jetbrains-toolbox.tar.gz
+        state: absent
+  tags: development_jetbrains
+
 - name: Ensure .ssh directory exists
   ansible.builtin.file:
     path: "{{ user_home }}/.ssh"
