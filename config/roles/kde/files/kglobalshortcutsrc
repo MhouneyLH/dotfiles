@@ -244,7 +244,6 @@ activate task manager entry 7=Meta+7,Meta+7,Activate Task Manager Entry 7
 activate task manager entry 8=Meta+8,Meta+8,Activate Task Manager Entry 8
 activate task manager entry 9=Meta+9,Meta+9,Activate Task Manager Entry 9
 activate widget 125=none,none,Activate Sticky Note Widget
-activate widget 3=Ctrl+Shift+Space,none,Activate Panel Widget
 activate widget 59=Meta+Ctrl+N,none,Activate Sticky Note Widget
 activate widget 67=none,none,Activate Pager Widget
 activate widget 99=none,none,Activate Panel Widget
