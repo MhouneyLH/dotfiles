@@ -19,7 +19,6 @@
         name: "{{ user_name }}"
         groups: sudo
         append: true
-        shell: /bin/bash # will change to zsh later
       tags: always
 
     - name: Update apt cache

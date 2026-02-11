@@ -163,8 +163,8 @@ plugin=org.kde.plasma.kickoff
 
 [Containments][131][Applets][132][Configuration]
 PreloadWeight=100
-popupHeight=536
-popupWidth=675
+popupHeight=544
+popupWidth=683
 
 [Containments][131][Applets][132][Configuration][General]
 favoritesPortedToKAstats=true
@@ -681,4 +681,4 @@ global=
 
 [ScreenMapping]
 itemsOnDisabledScreens=
-screenMapping=
+screenMapping=desktop:/steam.desktop,0,3895d9d4-79ef-4b5a-873e-01c15a6c0670
