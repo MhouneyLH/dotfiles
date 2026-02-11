@@ -120,3 +120,7 @@
         update_cache: true
   when: vscode_check.rc != 0 or 'install ok installed' not in vscode_check.stdout
   tags: applications_editor
+
+- name: Include installation of games
+  ansible.builtin.include_tasks: games.yml
+  tags: [always, applications_games]

@@ -1,0 +1,44 @@
+---
+- name: Install Steam
+  block:
+    - name: Enable 32-bit architecture
+      ansible.builtin.command:
+        cmd: dpkg --add-architecture i386
+      changed_when: false
+
+    - name: Update apt cache for multiarch
+      ansible.builtin.apt:
+        update_cache: true
+
+    - name: Install dependencies for Steam
+      ansible.builtin.apt:
+        name:
+          - libc6
+          - libc6:i386
+          - libegl1
+          - libegl1:i386
+          - libgbm1
+          - libgbm1:i386
+          - libgl1-mesa-dri
+          - libgl1-mesa-dri:i386
+          - libgl1
+          - libgl1:i386
+          - libxcb1:i386
+          - libxcb-dri3-0:i386
+        state: present
+
+    - name: Download Steam .deb package
+      ansible.builtin.get_url:
+        url: https://cdn.fastly.steamstatic.com/client/installer/steam.deb
+        dest: /tmp/steam.deb
+        mode: "0644"
+
+    - name: Install Steam using dpkg
+      ansible.builtin.shell: |
+        dpkg -i /tmp/steam.deb || apt-get install -f -y
+
+    - name: Clean up Steam installer
+      ansible.builtin.file:
+        path: /tmp/steam.deb
+        state: absent
+  tags: applications_games_steam
