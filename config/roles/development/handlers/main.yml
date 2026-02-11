@@ -1,5 +1,4 @@
 ---
-- name: reload udev rules
-  ansible.builtin.systemd:
-    name: udev
-    state: reloaded
+- name: reload udev
+  ansible.builtin.command: udevadm control --reload && udevadm trigger
+  changed_when: false

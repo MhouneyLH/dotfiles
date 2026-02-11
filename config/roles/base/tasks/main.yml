@@ -50,7 +50,7 @@
 
 - name: Set timezone
   community.general.timezone:
-    name: Europe/Vienna # Adjust for Linz, Austria
+    name: Europe/Vienna
   become: true
   tags: base_config
 

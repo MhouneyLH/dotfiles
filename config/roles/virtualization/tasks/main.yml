@@ -1,9 +1,10 @@
 ---
+# use virt-manager (Virtual Macdhine Manager as desktop entry) to start qemu/kvm virtual machines
 - name: Install QEMU/KVM packages
   ansible.builtin.apt:
     name:
       - qemu-system
-      - qemu-kvm # Kernel-based Virtual Machine support
+      - qemu-kvm # Kernel-based Virtual Machine (KVM) support
       - libvirt-daemon-system
       - libvirt-clients
       - bridge-utils

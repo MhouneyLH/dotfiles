@@ -52,7 +52,7 @@
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="2a03", TAG+="uaccess", RUN{builtin}+="uaccess"
       SUBSYSTEMS=="usb", ATTRS{idVendor}=="2341", TAG+="uaccess", RUN{builtin}+="uaccess"
     mode: "0644"
-  notify: reload udev rules
+  notify: reload udev
   tags: development_qmk
 
 - name: Setup QMK firmware directory
@@ -100,6 +100,16 @@
     src: /opt/vial/Vial.AppImage
     dest: /usr/local/bin/vial
     state: link
+  tags: development_vial
+
+- name: Create VIAL udev rules for keyboard access
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/59-vial.rules
+    content: |
+      # Vial keyboard runtime access
+      KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{serial}=="*vial:f64c2b3c*", MODE="0660", GROUP="{{ user_name }}", TAG+="uaccess", TAG+="udev-acl"
+    mode: "0644"
+  notify: reload udev
   tags: development_vial
 
 - name: Create desktop entry for VIAL

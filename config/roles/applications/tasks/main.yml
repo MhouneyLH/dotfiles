@@ -28,10 +28,9 @@
         dest: /tmp/gitkraken-amd64.deb
         mode: "0644"
 
-    - name: Install GitKraken
-      ansible.builtin.apt:
-        deb: /tmp/gitkraken-amd64.deb
-        state: present
+    - name: Install GitKraken using dpkg
+      ansible.builtin.shell: |
+        dpkg -i /tmp/gitkraken-amd64.deb || apt-get install -f -y
 
     - name: Clean up GitKraken installer
       ansible.builtin.file:
@@ -106,6 +105,7 @@
       ansible.builtin.shell:
         cmd: gpg --dearmor < /tmp/microsoft.asc > /usr/share/keyrings/packages.microsoft.gpg
         creates: /usr/share/keyrings/packages.microsoft.gpg
+      become: true
 
     - name: Add VS Code repository
       ansible.builtin.apt_repository:
