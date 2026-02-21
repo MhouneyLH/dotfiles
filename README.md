@@ -26,6 +26,12 @@ cp .env.example .env
 sudo ./install.sh
 ```
 
+If only part of a the configuration should be applied, you can run the Ansible playbook with specific tags:
+
+```bash
+ansible-playbook -i inventory.yml local.yml --tags "kde,konsole"
+```
+
 ## Contributing
 
 About tips, on how to improve the setup, or if you want to share your own configuration, feel free to open an issue or a pull request. Happy Configuring! 🤓🎉

@@ -133,8 +133,8 @@ ForegroundPositive=39,174,96
 ForegroundVisited=155,89,182
 
 [DirSelect Dialog]
-DirSelectDialog Size=820,584
-History Items[$e]=file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/homelab,file:$HOME/Documents/git,file:$HOME/Documents/git/dotfiles,file:$HOME/storage,file:$HOME/storage
+DirSelectDialog Size=960,540
+History Items[$e]=file:$HOME/Documents/git/homelab,file:$HOME/Documents/git,file:$HOME/Documents/git/bdv_project,file:$HOME/Downloads/a0aa84a193877197 (2),file:$HOME/Documents/git/bdv_project,file:$HOME/Downloads/a0aa84a193877197 (1),file:$HOME/Documents/git/bdv_project,file:$HOME/Documents/git,file:$HOME/Downloads,file:$HOME/Downloads/a0aa84a193877197/files,file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/dotfiles,file:$HOME/Documents/git/homelab,file:$HOME/Documents/git,file:$HOME/Documents/git/dotfiles,file:$HOME/storage,file:$HOME/storage
 Splitter State=\x00\x00\x00\xff\x00\x00\x00\x01\x00\x00\x00\x02\x00\x00\x00\x8c\x00\x00\x02\xa8\x00\xff\xff\xff\xff\x01\x00\x00\x00\x01\x00
 
 [General]
@@ -156,6 +156,7 @@ PathCombo Completionmode=5
 Show Bookmarks=false
 Show Full Path=false
 Show Inline Previews=true
+Show Preview=false
 Show Speedbar=true
 Show hidden files=false
 Sort by=Name
