@@ -166,6 +166,13 @@ alias unity_feuersim="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor
 alias dn="dotnet"
 alias postman="Postman"
 
+# kubernetes
+alias k="kubectl"
+alias kg='k get'
+alias kd='k describe'
+alias ka='k apply -f'
+alias kdel='k delete'
+
 # pnpm
 export PNPM_HOME="/home/lucas-dev/.local/share/pnpm"
 case ":$PATH:" in
