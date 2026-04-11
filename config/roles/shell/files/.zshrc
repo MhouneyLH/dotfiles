@@ -192,3 +192,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 ssh-add ~/.ssh/github/id_ed25519 2>/dev/null
+
+# opencode
+export PATH=/home/lucas-dev/.opencode/bin:$PATH
