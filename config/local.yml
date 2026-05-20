@@ -68,7 +68,8 @@
           System configuration complete!
 
           Manual steps still required:
-          - Fill in dotfiles/.env (cp .env.example .env, add ANTHROPIC_API_KEY and other tokens)
+          - Fill in dotfiles/.env (cp .env.example .env, add GITHUB_PERSONAL_ACCESS_TOKEN)
+          - Run 'claude auth login' to authenticate Claude Code (Pro plan — no API key needed)
           - Add SSH key to ~/.ssh/github
           - Configure Brave sync
           - Configure GitKraken sync
