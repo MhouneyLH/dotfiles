@@ -80,6 +80,9 @@ zsh-bat
 
 source $ZSH/oh-my-zsh.sh
 
+# Load secrets (API keys, tokens — .env is gitignored)
+[[ -f "$HOME/Documents/git/dotfiles/.env" ]] && source "$HOME/Documents/git/dotfiles/.env"
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
