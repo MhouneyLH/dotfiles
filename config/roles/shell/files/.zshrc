@@ -175,6 +175,12 @@ alias kg='k get'
 alias kd='k describe'
 alias ka='k apply -f'
 alias kdel='k delete'
+alias kl='k logs'
+alias ke='k exec -it'
+alias kpf='k port-forward'
+alias kctx='kubectl config get-contexts'
+alias kuctx='kubectl config use-context'
+alias km="kustomize"
 
 # pnpm
 export PNPM_HOME="/home/lucas-dev/.local/share/pnpm"
