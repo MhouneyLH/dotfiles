@@ -6,6 +6,7 @@
   vars:
     configure_kde: true
     configure_development: true
+    configure_ai_tools: true
 
   pre_tasks:
     - name: Fix conflicting VS Code repository configuration
@@ -46,6 +47,11 @@
       tags: development
       when: configure_development
 
+      # Claude Code, MCP servers, AI tools
+    - role: ai_tools
+      tags: ai_tools
+      when: configure_ai_tools
+
       # QEMU, minikube, etc.
     - role: virtualization
       tags: virtualization
@@ -62,6 +68,7 @@
           System configuration complete!
 
           Manual steps still required:
+          - Fill in dotfiles/.env (cp .env.example .env, add ANTHROPIC_API_KEY and other tokens)
           - Add SSH key to ~/.ssh/github
           - Configure Brave sync
           - Configure GitKraken sync
