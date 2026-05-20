@@ -48,14 +48,13 @@
     HOME: "{{ user_home }}"
   tags: shell_dotfiles
 
-- name: Copy custom .zshrc
-  ansible.builtin.copy:
-    src: .zshrc
+- name: Symlink .zshrc
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/shell/files/.zshrc"
     dest: "{{ user_home }}/.zshrc"
+    state: link
     owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: "0644"
-    backup: true
+    force: true
   become_user: "{{ user_name }}"
   become: true
   tags: shell_dotfiles
