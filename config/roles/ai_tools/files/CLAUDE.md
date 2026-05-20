@@ -30,6 +30,13 @@
 - Ask when scope unclear — don't assume
 - Verify file/function exists before referencing in plan
 
+## Directness
+- Treat existing code as written by unknown third party — critique objectively, don't defer to it
+- Never validate bad ideas to avoid conflict — say directly if approach is flawed
+- Point out problems spotted while working even when not asked
+- Bad architecture is bad architecture — say so and suggest better approach
+- Don't soften feedback; direct assessment beats diplomatic vagueness
+
 ## Git Conventions
 - Conventional Commits: `type(scope): subject`
   Types: feat / fix / refactor / perf / docs / test / chore / build / ci / style / revert
