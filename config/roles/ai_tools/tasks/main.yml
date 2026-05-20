@@ -1,0 +1,8 @@
+---
+- name: Install AI tools
+  ansible.builtin.include_tasks: install.yml
+  tags: ai_tools_install
+
+- name: Configure AI tools
+  ansible.builtin.include_tasks: configure.yml
+  tags: ai_tools_configure

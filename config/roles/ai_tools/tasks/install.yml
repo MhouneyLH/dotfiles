@@ -1,0 +1,37 @@
+---
+- name: Install Claude Code CLI
+  community.general.npm:
+    name: "@anthropic-ai/claude-code"
+    global: true
+    state: present
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+
+- name: Install caveman plugin
+  ansible.builtin.shell: |
+    curl -fsSL https://raw.githubusercontent.com/JuliusBrussee/caveman/main/install.sh | bash
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+  args:
+    creates: "{{ user_home }}/.claude/plugins/marketplaces/caveman"
+
+- name: Install trivy vulnerability scanner
+  ansible.builtin.shell: |
+    curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+  args:
+    creates: /usr/local/bin/trivy
+
+- name: Install govulncheck (Go vulnerability scanner)
+  ansible.builtin.shell: |
+    go install golang.org/x/vuln/cmd/govulncheck@latest
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+    PATH: "/usr/local/go/bin:{{ user_home }}/go/bin:{{ ansible_env.PATH }}"
+  args:
+    creates: "{{ user_home }}/go/bin/govulncheck"

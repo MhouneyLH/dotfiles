@@ -1,0 +1,128 @@
+---
+- name: Ensure ~/.claude/rules directory exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.claude/rules"
+    state: directory
+    owner: "{{ user_name }}"
+    mode: "0755"
+
+- name: Symlink global CLAUDE.md
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/CLAUDE.md"
+    dest: "{{ user_home }}/.claude/CLAUDE.md"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
+- name: Symlink context7 rule
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/rules/context7.md"
+    dest: "{{ user_home }}/.claude/rules/context7.md"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
+- name: Create .env from example if absent
+  ansible.builtin.copy:
+    src: "{{ git_repos_path }}/dotfiles/.env.example"
+    dest: "{{ git_repos_path }}/dotfiles/.env"
+    force: false
+    owner: "{{ user_name }}"
+    mode: "0600"
+
+# Merge permissions into settings.json without overwriting caveman-managed fields
+- name: Configure Claude Code permissions
+  ansible.builtin.shell: |
+    python3 - <<'PYEOF'
+    import json, os
+    path = os.path.expanduser('~/.claude/settings.json')
+    try:
+        with open(path, 'r') as f:
+            config = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        config = {}
+    config['permissions'] = {
+        'allow': [
+            'Bash(ls*)', 'Bash(cat*)', 'Bash(find*)', 'Bash(grep*)',
+            'Bash(echo*)', 'Bash(which*)', 'Bash(env*)', 'Bash(pwd*)',
+            'Bash(mkdir*)', 'Bash(rm*)', 'Bash(mv*)', 'Bash(cp*)', 'Bash(ln*)',
+            'Bash(chmod*)', 'Bash(chown*)', 'Bash(touch*)',
+            'Bash(npm*)', 'Bash(node*)', 'Bash(npx*)',
+            'Bash(pnpm*)', 'Bash(python*)', 'Bash(pip*)', 'Bash(uv*)',
+            'Bash(docker*)', 'Bash(kubectl*)', 'Bash(k9s*)', 'Bash(minikube*)',
+            'Bash(terraform*)', 'Bash(ansible*)',
+            'Bash(cargo*)', 'Bash(go*)',
+            'Bash(curl*)', 'Bash(wget*)',
+            'Bash(git status*)', 'Bash(git diff*)', 'Bash(git log*)',
+            'Bash(git add*)', 'Bash(git fetch*)', 'Bash(git pull*)',
+            'Bash(git checkout*)', 'Bash(git branch*)', 'Bash(git stash*)',
+            'Bash(git show*)', 'Bash(git blame*)', 'Bash(git remote*)',
+            'Bash(gh *)',
+            'Bash(npm audit*)', 'Bash(trivy*)', 'Bash(pip-audit*)',
+            'Bash(govulncheck*)', 'Bash(dotnet list*)',
+            'Bash(jq*)', 'Bash(sed*)', 'Bash(awk*)', 'Bash(sort*)',
+            'Bash(head*)', 'Bash(tail*)', 'Bash(wc*)', 'Bash(xargs*)',
+            'Read(*)', 'Write(*)', 'Edit(*)', 'MultiEdit(*)',
+            'Glob(*)', 'Grep(*)',
+            'WebFetch(*)', 'WebSearch(*)',
+            'Agent(*)'
+        ]
+        # git commit / push / rebase / reset / force-push intentionally omitted
+        # -> fall through to the approval dialog (require explicit user confirmation)
+    }
+    with open(path, 'w') as f:
+        json.dump(config, f, indent=2)
+    print('Permissions configured.')
+    PYEOF
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+  changed_when: true
+
+# MCP servers — idempotent via list check before adding
+- name: Get list of configured MCP servers
+  ansible.builtin.shell: |
+    {{ user_home }}/.local/bin/claude mcp list 2>/dev/null || true
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+  register: mcp_list
+  changed_when: false
+
+- name: Add context7 MCP server
+  ansible.builtin.shell: |
+    {{ user_home }}/.local/bin/claude mcp add -s user context7 -- npx -y @upstash/context7-mcp
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+  when: '"context7" not in mcp_list.stdout'
+
+- name: Add sequential-thinking MCP server
+  ansible.builtin.shell: |
+    {{ user_home }}/.local/bin/claude mcp add -s user sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+  when: '"sequential-thinking" not in mcp_list.stdout'
+
+- name: Add github MCP server
+  ansible.builtin.shell: |
+    {{ user_home }}/.local/bin/claude mcp add -s user github -- npx -y @modelcontextprotocol/server-github
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+  when: '"github" not in mcp_list.stdout'
+
+- name: Add memory MCP server
+  ansible.builtin.shell: |
+    {{ user_home }}/.local/bin/claude mcp add -s user memory -- npx -y @modelcontextprotocol/server-memory
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+  when: '"memory" not in mcp_list.stdout'
