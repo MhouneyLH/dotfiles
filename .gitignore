@@ -3,6 +3,9 @@
 .ansible
 .cache/
 
+# Caveman plugin skill exports (managed by plugin installer from remote)
+.agents/
+
 # Environment variables (contains personal information)
 .env
 
