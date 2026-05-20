@@ -7,7 +7,8 @@ Currently I collected my configuration for:
 - KDE Plasma
 - Konsole
 - shell (zsh)
-- base and development tools
+- base and development tools (terraform, kubectl, docker, kustomize etc.)
+- ... of course: AI tools (skills, system prompt etc.)
 - other applications I use on a near daily basis
 
 As of now, there are still some steps in the setup that have to be done manually like starting to sync VSCode or Brave Browser settings.
@@ -17,19 +18,24 @@ As of now, there are still some steps in the setup that have to be done manually
 Run the following commands to create the setup on your own local machine:
 
 ```bash
-cd config
+# Clone the repo
+git clone https://github.com/MhouneyLH/dotfiles.git ~/Documents/git/dotfiles
+cd ~/Documents/git/dotfiles
 
-# Copy and edit the environment file with your personal details
-# and edit with information
+# Copy and fill in secrets (GitHub PAT etc.)
 cp .env.example .env
+vim .env
 
 sudo ./install.sh
+
+# After install: authenticate Claude Code
+claude auth login
 ```
 
-If only part of a the configuration should be applied, you can run the Ansible playbook with specific tags:
+If only part of the configuration should be applied, run the Ansible playbook with specific tags:
 
 ```bash
-ansible-playbook -i inventory.yml local.yml --tags "kde,konsole"
+ansible-playbook config/local.yml -i config/inventory.yml --tags "kde,konsole"
 ```
 
 ## Contributing
