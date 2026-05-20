@@ -1,13 +1,14 @@
 ---
 - name: Install Claude Code CLI
-  community.general.npm:
-    name: "@anthropic-ai/claude-code"
-    global: true
-    state: present
+  ansible.builtin.shell: |
+    npm install -g @anthropic-ai/claude-code
   become_user: "{{ user_name }}"
   become: true
   environment:
     HOME: "{{ user_home }}"
+    NPM_CONFIG_PREFIX: "{{ user_home }}/.local"
+  args:
+    creates: "{{ user_home }}/.local/bin/claude"
 
 - name: Install caveman plugin
   ansible.builtin.shell: |
