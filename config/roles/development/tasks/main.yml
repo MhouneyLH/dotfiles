@@ -132,6 +132,27 @@
       ansible.builtin.file:
         path: /tmp/minikube_latest_amd64.deb
         state: absent
+
+    - name: Install helm
+      ansible.builtin.shell: |
+        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+      args:
+        creates: /usr/local/bin/helm
+
+    - name: Get latest kustomize version
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/kubernetes-sigs/kustomize/releases/latest
+        return_content: true
+      register: kustomize_release
+
+    - name: Install kustomize
+      ansible.builtin.shell: |
+        version=$(echo '{{ kustomize_release.json.tag_name }}' | sed 's/kustomize\///')
+        curl -sLO "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2F${version}/kustomize_${version}_linux_amd64.tar.gz"
+        tar -xzf kustomize_${version}_linux_amd64.tar.gz -C /usr/local/bin/
+        rm kustomize_${version}_linux_amd64.tar.gz
+      args:
+        creates: /usr/local/bin/kustomize
   tags: development_kubernetes
 
 - name: Install Terraform
