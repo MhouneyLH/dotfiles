@@ -217,6 +217,41 @@
         state: absent
   tags: development_python
 
+- name: Install Go
+  block:
+    - name: Get latest Go version
+      ansible.builtin.uri:
+        url: https://go.dev/VERSION?m=text
+        return_content: true
+      register: go_version_response
+
+    - name: Set Go version fact
+      ansible.builtin.set_fact:
+        go_version: "{{ go_version_response.content.split('\n')[0] }}"
+
+    - name: Download Go tarball
+      ansible.builtin.get_url:
+        url: "https://go.dev/dl/{{ go_version }}.linux-amd64.tar.gz"
+        dest: /tmp/go.tar.gz
+        mode: "0644"
+
+    - name: Remove previous Go installation
+      ansible.builtin.file:
+        path: /usr/local/go
+        state: absent
+
+    - name: Extract Go archive
+      ansible.builtin.unarchive:
+        src: /tmp/go.tar.gz
+        dest: /usr/local
+        remote_src: true
+
+    - name: Clean up Go installer
+      ansible.builtin.file:
+        path: /tmp/go.tar.gz
+        state: absent
+  tags: development_go
+
 - name: Install lazygit
   ansible.builtin.apt:
     name: lazygit
