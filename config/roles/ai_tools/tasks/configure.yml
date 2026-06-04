@@ -22,6 +22,21 @@
     owner: "{{ user_name }}"
     force: true
 
+- name: Ensure ~/.claude/skills directory exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.claude/skills"
+    state: directory
+    owner: "{{ user_name }}"
+    mode: "0755"
+
+- name: Symlink cold-review skill
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/skills/cold-review"
+    dest: "{{ user_home }}/.claude/skills/cold-review"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
 - name: Create .env from example if absent
   ansible.builtin.copy:
     src: "{{ git_repos_path }}/dotfiles/.env.example"
@@ -44,7 +59,7 @@
     config['permissions'] = {
         'allow': [
             'Bash(ls*)', 'Bash(cat*)', 'Bash(find*)', 'Bash(grep*)',
-            'Bash(echo*)', 'Bash(which*)', 'Bash(env*)', 'Bash(pwd*)',
+            'Bash(echo*)', 'Bash(which*)', 'Bash(env*)', 'Bash(pwd*)', 'Bash(cd*)',
             'Bash(mkdir*)', 'Bash(rm*)', 'Bash(mv*)', 'Bash(cp*)', 'Bash(ln*)',
             'Bash(chmod*)', 'Bash(chown*)', 'Bash(touch*)',
             'Bash(npm*)', 'Bash(node*)', 'Bash(npx*)',
