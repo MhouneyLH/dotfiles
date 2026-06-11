@@ -182,6 +182,10 @@ alias kctx='kubectl config get-contexts'
 alias kuctx='kubectl config use-context'
 alias km="kustomize"
 
+# random fixes
+# fixes that my middle monitor at my home setup is actually showing the content instead of just being black
+alias homeMon="xrandr --output DP-2 --mode 2560x1440 --rate 120 --right-of HDMI-1"
+
 # pnpm
 export PNPM_HOME="/home/lucas-dev/.local/share/pnpm"
 case ":$PATH:" in
