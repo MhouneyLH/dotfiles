@@ -152,7 +152,6 @@ alias ....="cd ...."
 alias .....="cd ....."
 alias grep="grep --color=auto"
 alias h="history"
-#alias cat="batcat"
 alias uncorrupt_steam="mv ~/.steam ~/.steam.bak && mv ~/.local/share/Steam ~/.local/share/Steam.bak"
 alias dpsn="docker ps --format '{{.Names}}'" # only get names of the running services
 alias v="vim"
@@ -181,6 +180,9 @@ alias kpf='k port-forward'
 alias kctx='kubectl config get-contexts'
 alias kuctx='kubectl config use-context'
 alias km="kustomize"
+
+# ai
+alias cc="claude"
 
 # random fixes
 # fixes that my middle monitor at my home setup is actually showing the content instead of just being black
