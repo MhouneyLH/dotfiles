@@ -8,7 +8,8 @@ useReleaseToCapture=true
 captureMode=0
 
 [ImageSave]
-lastImageSaveLocation=file:///home/lucas-dev/Pictures/Screenshots/Screenshot_20260220_183538.png
+imageCompressionQuality=100
+lastImageSaveLocation=file:///home/lucas-dev/Pictures/Screenshots/Screenshot_20260628_181503.png
 translatedScreenshotsFolder=Screenshots
 
 [VideoSave]
