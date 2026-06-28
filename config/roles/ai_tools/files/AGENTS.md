@@ -1,6 +1,7 @@
 # Global Context
 
 ## Tech Stack
+
 - OS: Debian 13, KDE Plasma
 - Shell: zsh + oh-my-zsh
 - Infra: Docker, Kubernetes (kubectl/k9s/minikube), Terraform, Ansible
@@ -10,6 +11,7 @@
 - Git: lazygit, gh CLI, GitKraken
 
 ## Code Style
+
 - No comments unless WHY is non-obvious
 - No abstractions beyond task scope
 - No error handling for impossible cases
@@ -18,19 +20,23 @@
 - Trust framework guarantees; validate only at system boundaries
 
 ## Tool Preferences
+
 - Parallel tool calls when independent
 - Read before Edit
 - Bash only for shell-only operations
 - Explore subagent for broad codebase search (>3 queries)
 - cavecrew subagents for compressed context (investigator/builder/reviewer)
+- for github, rather use the `gh` CLI
 
 ## Agentic Patterns
+
 - Check existing code/utils before implementing
 - State what you're about to do, then do it
 - Ask when scope unclear — don't assume
 - Verify file/function exists before referencing in plan
 
 ## Directness
+
 - Treat existing code as written by unknown third party — critique objectively, don't defer to it
 - Never validate bad ideas to avoid conflict — say directly if approach is flawed
 - Point out problems spotted while working even when not asked
@@ -38,6 +44,9 @@
 - Don't soften feedback; direct assessment beats diplomatic vagueness
 
 ## Git Conventions
+
+- always commit as you go, don't batch all changes into one massive commit
+- the commits should be easy to read and understand, so that reviewers can follow the changes without confusion
 - Conventional Commits: `type(scope): subject`
   Types: feat / fix / refactor / perf / docs / test / chore / build / ci / style / revert
 - Atomic commits: one logical change per commit, reviewers understand each in isolation
@@ -48,10 +57,13 @@
   ```
   Co-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>
   ```
+
 - **Never commit without explicit user approval** — always ask first
 
 ## Refactoring Triggers
+
 Spot these and offer refactor as separate commit:
+
 - Function > 40 lines → extract
 - File > 300 lines → split by responsibility
 - 3+ near-identical code blocks → abstract
@@ -59,11 +71,13 @@ Spot these and offer refactor as separate commit:
 - Unclear naming when reading code cold → rename
 
 ## Env Files
+
 - Whenever creating `.env`: also create/update `.env.example` with same keys but placeholder values
 - `.env.example` always committed; `.env` always gitignored
 - If `.env.example` missing from repo, create it immediately
 
 ## Security
+
 - On any dependency change: run `trivy fs .` for comprehensive vulnerability scanning
 - Ecosystem-specific checks on dep changes:
   - Node: `npm audit`
