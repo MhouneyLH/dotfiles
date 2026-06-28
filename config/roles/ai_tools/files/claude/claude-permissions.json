@@ -84,7 +84,6 @@
     "WebFetch(*)",
     "WebSearch(*)",
     "Agent(*)",
-    "mcp__context7__*",
-    "mcp__sequential-thinking__*"
+    "mcp__*"
   ]
 }
