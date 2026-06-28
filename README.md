@@ -26,6 +26,10 @@ cd ~/Documents/git/dotfiles
 cp .env.example .env
 vim .env
 
+# Copy and fill in MCP secrets (API keys etc.)
+cp config/roles/ai_tools/files/mcp.json.example config/roles/ai_tools/files/mcp.json
+vim config/roles/ai_tools/files/mcp.json
+
 sudo ./install.sh
 
 # After install: authenticate Claude Code

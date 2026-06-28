@@ -9,6 +9,9 @@
 # Environment variables (contains personal information)
 .env
 
+# MCP config (contains secrets — fill from mcp.json.example)
+config/roles/ai_tools/files/mcp.json
+
 # Temporary files
 *.tmp
 *.log

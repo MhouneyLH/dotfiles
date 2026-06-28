@@ -8,7 +8,7 @@
 
 - name: Symlink global CLAUDE.md
   ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/CLAUDE.md"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/AGENTS.md"
     dest: "{{ user_home }}/.claude/CLAUDE.md"
     state: link
     owner: "{{ user_name }}"
@@ -33,6 +33,14 @@
   ansible.builtin.file:
     src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/skills/cold-review"
     dest: "{{ user_home }}/.claude/skills/cold-review"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
+- name: Symlink soccer-shorts skill
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/skills/soccer-shorts"
+    dest: "{{ user_home }}/.claude/skills/soccer-shorts"
     state: link
     owner: "{{ user_name }}"
     force: true
@@ -68,10 +76,7 @@
             'Bash(terraform*)', 'Bash(ansible*)',
             'Bash(cargo*)', 'Bash(go*)',
             'Bash(curl*)', 'Bash(wget*)',
-            'Bash(git status*)', 'Bash(git diff*)', 'Bash(git log*)',
-            'Bash(git add*)', 'Bash(git fetch*)', 'Bash(git pull*)',
-            'Bash(git checkout*)', 'Bash(git branch*)', 'Bash(git stash*)',
-            'Bash(git show*)', 'Bash(git blame*)', 'Bash(git remote*)',
+            'Bash(git *)',
             'Bash(gh *)',
             'Bash(npm audit*)', 'Bash(trivy*)', 'Bash(pip-audit*)',
             'Bash(govulncheck*)', 'Bash(dotnet list*)',
@@ -80,10 +85,10 @@
             'Read(*)', 'Write(*)', 'Edit(*)', 'MultiEdit(*)',
             'Glob(*)', 'Grep(*)',
             'WebFetch(*)', 'WebSearch(*)',
-            'Agent(*)'
+            'Agent(*)',
+            'mcp__context7__*',
+            'mcp__sequential-thinking__*',
         ]
-        # git commit / push / rebase / reset / force-push intentionally omitted
-        # -> fall through to the approval dialog (require explicit user confirmation)
     }
     with open(path, 'w') as f:
         json.dump(config, f, indent=2)
@@ -95,49 +100,34 @@
     HOME: "{{ user_home }}"
   changed_when: true
 
-# MCP servers — idempotent via list check before adding
-- name: Get list of configured MCP servers
-  ansible.builtin.shell: |
-    {{ user_home }}/.local/bin/claude mcp list 2>/dev/null || true
-  become_user: "{{ user_name }}"
-  become: true
-  environment:
-    HOME: "{{ user_home }}"
-  register: mcp_list
-  changed_when: false
+- name: Create mcp.json from example if absent
+  ansible.builtin.copy:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/mcp.json.example"
+    dest: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/mcp.json"
+    force: false
+    owner: "{{ user_name }}"
+    mode: "0600"
 
-- name: Add context7 MCP server
+- name: Merge mcpServers into ~/.claude.json
   ansible.builtin.shell: |
-    {{ user_home }}/.local/bin/claude mcp add -s user context7 -- npx -y @upstash/context7-mcp
+    python3 - <<'PYEOF'
+    import json, os
+    mcp_src = "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/mcp.json"
+    claude_json = os.path.expanduser("~/.claude.json")
+    with open(mcp_src, "r") as f:
+        mcp = json.load(f)
+    try:
+        with open(claude_json, "r") as f:
+            config = json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        config = {}
+    config["mcpServers"] = mcp["mcpServers"]
+    with open(claude_json, "w") as f:
+        json.dump(config, f, indent=2)
+    print("mcpServers merged.")
+    PYEOF
   become_user: "{{ user_name }}"
   become: true
   environment:
     HOME: "{{ user_home }}"
-  when: '"context7" not in mcp_list.stdout'
-
-- name: Add sequential-thinking MCP server
-  ansible.builtin.shell: |
-    {{ user_home }}/.local/bin/claude mcp add -s user sequential-thinking -- npx -y @modelcontextprotocol/server-sequential-thinking
-  become_user: "{{ user_name }}"
-  become: true
-  environment:
-    HOME: "{{ user_home }}"
-  when: '"sequential-thinking" not in mcp_list.stdout'
-
-- name: Add github MCP server
-  ansible.builtin.shell: |
-    {{ user_home }}/.local/bin/claude mcp add -s user github -- npx -y @modelcontextprotocol/server-github
-  become_user: "{{ user_name }}"
-  become: true
-  environment:
-    HOME: "{{ user_home }}"
-  when: '"github" not in mcp_list.stdout'
-
-- name: Add memory MCP server
-  ansible.builtin.shell: |
-    {{ user_home }}/.local/bin/claude mcp add -s user memory -- npx -y @modelcontextprotocol/server-memory
-  become_user: "{{ user_name }}"
-  become: true
-  environment:
-    HOME: "{{ user_home }}"
-  when: '"memory" not in mcp_list.stdout'
+  changed_when: true
