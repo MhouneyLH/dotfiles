@@ -10,7 +10,7 @@
 .env
 
 # MCP config (contains secrets — fill from mcp.json.example)
-config/roles/ai_tools/files/mcp.json
+config/roles/ai_tools/files/claude/mcp.json
 
 # Temporary files
 *.tmp

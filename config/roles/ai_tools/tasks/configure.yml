@@ -8,7 +8,7 @@
 
 - name: Symlink global CLAUDE.md
   ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/AGENTS.md"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/AGENTS.md"
     dest: "{{ user_home }}/.claude/CLAUDE.md"
     state: link
     owner: "{{ user_name }}"
@@ -16,7 +16,7 @@
 
 - name: Symlink context7 rule
   ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/rules/context7.md"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/rules/context7.md"
     dest: "{{ user_home }}/.claude/rules/context7.md"
     state: link
     owner: "{{ user_name }}"
@@ -31,7 +31,7 @@
 
 - name: Symlink cold-review skill
   ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/skills/cold-review"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/cold-review"
     dest: "{{ user_home }}/.claude/skills/cold-review"
     state: link
     owner: "{{ user_name }}"
@@ -39,7 +39,7 @@
 
 - name: Symlink soccer-shorts skill
   ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/skills/soccer-shorts"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/soccer-shorts"
     dest: "{{ user_home }}/.claude/skills/soccer-shorts"
     state: link
     owner: "{{ user_name }}"
@@ -57,7 +57,7 @@
   ansible.builtin.shell: |
     python3 - <<'PYEOF'
     import json, os
-    perms_src = "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude-permissions.json"
+    perms_src = "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/claude-permissions.json"
     settings_path = os.path.expanduser("~/.claude/settings.json")
     with open(perms_src, "r") as f:
         perms = json.load(f)
@@ -79,8 +79,8 @@
 
 - name: Create mcp.json from example if absent
   ansible.builtin.copy:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/mcp.json.example"
-    dest: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/mcp.json"
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/mcp.json.example"
+    dest: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/mcp.json"
     force: false
     owner: "{{ user_name }}"
     mode: "0600"
@@ -89,7 +89,7 @@
   ansible.builtin.shell: |
     python3 - <<'PYEOF'
     import json, os
-    mcp_src = "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/mcp.json"
+    mcp_src = "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/mcp.json"
     claude_json = os.path.expanduser("~/.claude.json")
     with open(mcp_src, "r") as f:
         mcp = json.load(f)
