@@ -21,6 +21,7 @@
     - kcminputrc
     - kxkbrc
     - kglobalshortcutsrc
+    - khotkeysrc
     - powermanagementprofilesrc
     - powerdevilrc
     - plasma-org.kde.plasma.desktop-appletsrc
@@ -41,6 +42,7 @@
     - kcminputrc
     - kxkbrc
     - kglobalshortcutsrc
+    - khotkeysrc
     - powermanagementprofilesrc
     - powerdevilrc
     - plasma-org.kde.plasma.desktop-appletsrc
@@ -63,6 +65,7 @@
     - kcminputrc # Mouse and touchpad settings
     - kxkbrc # Keyboard layout
     - kglobalshortcutsrc # Global shortcuts
+    - khotkeysrc # Custom command shortcuts (voice input toggle)
     - powermanagementprofilesrc # Power management profiles
     - powerdevilrc # Active power profile (performance/balanced/power-saver)
     - plasma-org.kde.plasma.desktop-appletsrc # Panel/taskbar and widgets

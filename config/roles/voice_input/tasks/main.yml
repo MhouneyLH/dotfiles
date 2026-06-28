@@ -1,0 +1,82 @@
+---
+- name: Install nerd-dictation system dependencies
+  ansible.builtin.apt:
+    name:
+      - python3-pyaudio
+      - portaudio19-dev
+      - xdotool
+      - sox
+      - unzip
+    state: present
+  tags: voice_input_deps
+
+- name: Install vosk Python package
+  ansible.builtin.pip:
+    name: vosk
+    state: present
+    executable: pip3
+    extra_args: "--user"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_vosk
+
+- name: Clone nerd-dictation
+  ansible.builtin.git:
+    repo: https://github.com/ideasman42/nerd-dictation.git
+    dest: "{{ user_home }}/.local/share/nerd-dictation"
+    version: main
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_install
+
+- name: Create vosk models directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/share/vosk"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_model
+
+- name: Download vosk small English model
+  ansible.builtin.get_url:
+    url: https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
+    dest: /tmp/vosk-model-small-en-us-0.15.zip
+    mode: "0644"
+  tags: voice_input_model
+
+- name: Extract vosk model
+  ansible.builtin.unarchive:
+    src: /tmp/vosk-model-small-en-us-0.15.zip
+    dest: "{{ user_home }}/.local/share/vosk/"
+    remote_src: true
+    creates: "{{ user_home }}/.local/share/vosk/vosk-model-small-en-us-0.15"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_model
+
+- name: Ensure ~/.local/bin exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/bin"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_script
+
+- name: Install nerd-dictation toggle script
+  ansible.builtin.copy:
+    src: nerd-dictation-toggle
+    dest: "{{ user_home }}/.local/bin/nerd-dictation-toggle"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_script
