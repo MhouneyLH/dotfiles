@@ -10,12 +10,25 @@
     state: present
   tags: voice_input_deps
 
-- name: Install vosk Python package
+- name: Install python3-full for venv support
+  ansible.builtin.apt:
+    name: python3-full
+    state: present
+  tags: voice_input_vosk
+
+- name: Create vosk venv
+  ansible.builtin.command:
+    cmd: python3 -m venv {{ user_home }}/.local/share/nerd-dictation-venv
+    creates: "{{ user_home }}/.local/share/nerd-dictation-venv/bin/python"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_vosk
+
+- name: Install vosk into venv
   ansible.builtin.pip:
     name: vosk
     state: present
-    executable: pip3
-    extra_args: "--user"
+    virtualenv: "{{ user_home }}/.local/share/nerd-dictation-venv"
   become_user: "{{ user_name }}"
   become: true
   tags: voice_input_vosk

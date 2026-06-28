@@ -1,9 +1,10 @@
 #!/bin/bash
+VENV_PYTHON="${HOME}/.local/share/nerd-dictation-venv/bin/python"
 NERD_DICTATION="${HOME}/.local/share/nerd-dictation/nerd-dictation"
 VOSK_MODEL="${HOME}/.local/share/vosk/vosk-model-small-en-us-0.15"
 
 if pgrep -f "nerd-dictation begin" > /dev/null 2>&1; then
-    "${NERD_DICTATION}" end
+    "${VENV_PYTHON}" "${NERD_DICTATION}" end
 else
-    "${NERD_DICTATION}" begin --vosk-model-dir="${VOSK_MODEL}"
+    "${VENV_PYTHON}" "${NERD_DICTATION}" begin --vosk-model-dir="${VOSK_MODEL}"
 fi
