@@ -85,26 +85,10 @@
     owner: "{{ user_name }}"
     mode: "0600"
 
-- name: Merge mcpServers into ~/.claude.json
-  ansible.builtin.shell: |
-    python3 - <<'PYEOF'
-    import json, os
-    mcp_src = "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/mcp.json"
-    claude_json = os.path.expanduser("~/.claude.json")
-    with open(mcp_src, "r") as f:
-        mcp = json.load(f)
-    try:
-        with open(claude_json, "r") as f:
-            config = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        config = {}
-    config["mcpServers"] = mcp["mcpServers"]
-    with open(claude_json, "w") as f:
-        json.dump(config, f, indent=2)
-    print("mcpServers merged.")
-    PYEOF
-  become_user: "{{ user_name }}"
-  become: true
-  environment:
-    HOME: "{{ user_home }}"
-  changed_when: true
+- name: Symlink mcp.json to ~/.claude/mcp.json
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/mcp.json"
+    dest: "{{ user_home }}/.claude/mcp.json"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
