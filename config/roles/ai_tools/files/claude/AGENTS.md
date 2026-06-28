@@ -1,15 +1,5 @@
 # Global Context
-
-## Tech Stack
-
-- OS: Debian 13, KDE Plasma
-- Shell: zsh + oh-my-zsh
-- Infra: Docker, Kubernetes (kubectl/k9s/minikube), Terraform, Ansible
-- Languages: Node.js/TypeScript, Python (uv), occasional Go
-- Package managers: pnpm, uv, npm
-- Editors: VS Code, JetBrains IDEs
-- Git: lazygit, gh CLI, GitKraken
-
+Ŝ
 ## Code Style
 
 - No comments unless WHY is non-obvious
@@ -18,6 +8,13 @@
 - No backwards-compat hacks for removed code
 - Edit existing files; don't create new ones unless required
 - Trust framework guarantees; validate only at system boundaries
+- Never manually modify CHANGELOG.md or any files marked as auto-generated
+
+## Writing Style
+
+- Never use em dash. Use plain dash "-" instead.
+- When writing or substantially editing long Markdown files, put each full sentence on its own line.
+  Preserve normal Markdown structure, but avoid wrapping multiple sentences onto one physical line.
 
 ## Tool Preferences
 
@@ -32,15 +29,22 @@
 
 - Check existing code/utils before implementing
 - State what you're about to do, then do it
-- Ask when scope unclear — don't assume
+- Ask when scope unclear - don't assume
 - Verify file/function exists before referencing in plan
+- When doing bug fixes, always start with reproducing the bug in an E2E setting as closely aligned with how an end user would encounter it.
+  This makes sure you find the real problem so your fix will actually solve it.
+
+## Decision Making
+
+- When making technical decisions, do not give much weight to development cost.
+  Instead, prefer quality, simplicity, robustness, scalability, and long term maintainability.
 
 ## Directness
 
-- Treat existing code as written by unknown third party — critique objectively, don't defer to it
-- Never validate bad ideas to avoid conflict — say directly if approach is flawed
+- Treat existing code as written by unknown third party - critique objectively, don't defer to it
+- Never validate bad ideas to avoid conflict - say directly if approach is flawed
 - Point out problems spotted while working even when not asked
-- Bad architecture is bad architecture — say so and suggest better approach
+- Bad architecture is bad architecture - say so and suggest better approach
 - Don't soften feedback; direct assessment beats diplomatic vagueness
 
 ## Git Conventions
@@ -55,10 +59,10 @@
 - Always append co-author footer:
 
   ```
-  Co-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>
+  Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
   ```
 
-- **Never commit without explicit user approval** — always ask first
+- Commit after each logical change without asking - commit as you go
 
 ## Refactoring Triggers
 
@@ -87,3 +91,10 @@ Spot these and offer refactor as separate commit:
 - Flag any hardcoded secrets, tokens, passwords immediately
 - Never commit `.env`, credentials, or private keys
 - Suggest `security-review` skill before merging security-sensitive changes
+
+## Quality Standards
+
+- When end-to-end testing, be picky about UI and obsessed with pixel perfection.
+  If something clearly looks off, even if not directly related to current work, fix it.
+- Apply same high standard to engineering excellence: lint, test failures, and test flakiness.
+  If you see one, even if not caused by current work, still get it fixed.
