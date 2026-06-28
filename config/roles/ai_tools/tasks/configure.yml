@@ -53,46 +53,23 @@
     owner: "{{ user_name }}"
     mode: "0600"
 
-# Merge permissions into settings.json without overwriting caveman-managed fields
 - name: Configure Claude Code permissions
   ansible.builtin.shell: |
     python3 - <<'PYEOF'
     import json, os
-    path = os.path.expanduser('~/.claude/settings.json')
+    perms_src = "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude-permissions.json"
+    settings_path = os.path.expanduser("~/.claude/settings.json")
+    with open(perms_src, "r") as f:
+        perms = json.load(f)
     try:
-        with open(path, 'r') as f:
+        with open(settings_path, "r") as f:
             config = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         config = {}
-    config['permissions'] = {
-        'allow': [
-            'Bash(ls*)', 'Bash(cat*)', 'Bash(find*)', 'Bash(grep*)',
-            'Bash(echo*)', 'Bash(which*)', 'Bash(env*)', 'Bash(pwd*)', 'Bash(cd*)',
-            'Bash(mkdir*)', 'Bash(rm*)', 'Bash(mv*)', 'Bash(cp*)', 'Bash(ln*)',
-            'Bash(chmod*)', 'Bash(chown*)', 'Bash(touch*)',
-            'Bash(npm*)', 'Bash(node*)', 'Bash(npx*)',
-            'Bash(pnpm*)', 'Bash(python*)', 'Bash(pip*)', 'Bash(uv*)',
-            'Bash(docker*)', 'Bash(kubectl*)', 'Bash(k9s*)', 'Bash(minikube*)',
-            'Bash(terraform*)', 'Bash(ansible*)',
-            'Bash(cargo*)', 'Bash(go*)',
-            'Bash(curl*)', 'Bash(wget*)',
-            'Bash(git *)',
-            'Bash(gh *)',
-            'Bash(npm audit*)', 'Bash(trivy*)', 'Bash(pip-audit*)',
-            'Bash(govulncheck*)', 'Bash(dotnet list*)',
-            'Bash(jq*)', 'Bash(sed*)', 'Bash(awk*)', 'Bash(sort*)',
-            'Bash(head*)', 'Bash(tail*)', 'Bash(wc*)', 'Bash(xargs*)',
-            'Read(*)', 'Write(*)', 'Edit(*)', 'MultiEdit(*)',
-            'Glob(*)', 'Grep(*)',
-            'WebFetch(*)', 'WebSearch(*)',
-            'Agent(*)',
-            'mcp__context7__*',
-            'mcp__sequential-thinking__*',
-        ]
-    }
-    with open(path, 'w') as f:
+    config["permissions"] = perms
+    with open(settings_path, "w") as f:
         json.dump(config, f, indent=2)
-    print('Permissions configured.')
+    print("Permissions configured.")
     PYEOF
   become_user: "{{ user_name }}"
   become: true
