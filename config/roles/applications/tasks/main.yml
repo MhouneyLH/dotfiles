@@ -121,6 +121,44 @@
   when: vscode_check.rc != 0 or 'install ok installed' not in vscode_check.stdout
   tags: applications_editor
 
+- name: Install Signal
+  block:
+    - name: Add Signal GPG key
+      ansible.builtin.get_url:
+        url: https://updates.signal.org/desktop/apt/keys.asc
+        dest: /tmp/signal-desktop-keyring.asc
+        mode: "0644"
+
+    - name: Dearmor Signal GPG key
+      ansible.builtin.shell:
+        cmd: gpg --dearmor < /tmp/signal-desktop-keyring.asc > /usr/share/keyrings/signal-desktop-keyring.gpg
+        creates: /usr/share/keyrings/signal-desktop-keyring.gpg
+
+    - name: Add Signal repository
+      ansible.builtin.deb822_repository:
+        name: signal-desktop
+        types: deb
+        uris: https://updates.signal.org/desktop/apt
+        suites: xenial
+        components: main
+        signed_by: /usr/share/keyrings/signal-desktop-keyring.gpg
+
+    - name: Install Signal
+      ansible.builtin.apt:
+        name: signal-desktop
+        state: present
+        update_cache: true
+
+    - name: Create Desktop shortcut for Signal
+      ansible.builtin.copy:
+        src: /usr/share/applications/signal-desktop.desktop
+        dest: "{{ user_home }}/Desktop/signal-desktop.desktop"
+        remote_src: true
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: "0755"
+  tags: applications_chat
+
 - name: Include installation of games
   ansible.builtin.include_tasks: games.yml
   tags: [always, applications_games]
