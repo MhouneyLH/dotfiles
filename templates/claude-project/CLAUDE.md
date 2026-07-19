@@ -6,12 +6,6 @@
 
 <!-- e.g. TypeScript, Next.js, Postgres via Prisma, deployed to Vercel -->
 
-## Code Style
-
-- No comments unless WHY is non-obvious
-- No abstractions beyond task scope
-- Match existing patterns before introducing new ones
-
 ## Commands
 
 <!-- The commands Claude should reach for, not rediscover each session -->
@@ -22,9 +16,11 @@
 - Lint/typecheck: `_`
 - Build: `_`
 
-## Conventions
+## Rules
 
-<!-- Anything a new contributor would get wrong without being told -->
+- No comments unless WHY is non-obvious
+- No abstractions beyond task scope
+- Match existing patterns before introducing new ones
 
 ## Do Not
 
@@ -34,3 +30,9 @@
 
 - Conventional Commits: `type(scope): subject`
 - Atomic commits: one logical change per commit
+
+<!--
+Keep this file under ~200 lines. If something only matters for specific
+file types/directories, move it to .claude/rules/<topic>.md with a
+`paths:` frontmatter glob instead of loading it every session.
+-->

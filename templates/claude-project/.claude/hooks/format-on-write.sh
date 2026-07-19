@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# PostToolUse hook (Write|Edit). Receives tool-call JSON on stdin.
+# PostToolUse hook (Edit|Write). Receives tool-call JSON on stdin.
 # Fill in the formatter for this project's stack; no-ops until then.
 set -euo pipefail
 
