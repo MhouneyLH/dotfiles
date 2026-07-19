@@ -45,6 +45,22 @@
     owner: "{{ user_name }}"
     force: true
 
+- name: Symlink grill-me skill
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/grill-me"
+    dest: "{{ user_home }}/.claude/skills/grill-me"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
+- name: Symlink grilling skill
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/grilling"
+    dest: "{{ user_home }}/.claude/skills/grilling"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
 - name: Create .env from example if absent
   ansible.builtin.copy:
     src: "{{ git_repos_path }}/dotfiles/.env.example"
