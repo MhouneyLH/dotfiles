@@ -1,0 +1,14 @@
+{
+  "name": "lucas-dotfiles",
+  "owner": {
+    "name": "Lucas Hünniger"
+  },
+  "description": "Personal Claude Code plugins, bundled with dotfiles",
+  "plugins": [
+    {
+      "name": "dotfiles-skills",
+      "source": "./plugins/dotfiles-skills",
+      "description": "Personal skill bundle: cold-review"
+    }
+  ]
+}

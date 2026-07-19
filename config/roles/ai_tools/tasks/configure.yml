@@ -22,44 +22,46 @@
     owner: "{{ user_name }}"
     force: true
 
-- name: Ensure ~/.claude/skills directory exists
-  ansible.builtin.file:
-    path: "{{ user_home }}/.claude/skills"
-    state: directory
-    owner: "{{ user_name }}"
-    mode: "0755"
+- name: Register lucas-dotfiles Claude plugin marketplace
+  ansible.builtin.shell: |
+    claude plugin marketplace add "{{ git_repos_path }}/dotfiles" --scope user
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+    PATH: "{{ user_home }}/.local/bin:{{ ansible_env.PATH }}"
+  changed_when: true
 
-- name: Symlink cold-review skill
-  ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/cold-review"
-    dest: "{{ user_home }}/.claude/skills/cold-review"
-    state: link
-    owner: "{{ user_name }}"
-    force: true
+- name: Install dotfiles-skills plugin (cold-review)
+  ansible.builtin.shell: |
+    claude plugin install dotfiles-skills@lucas-dotfiles
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+    PATH: "{{ user_home }}/.local/bin:{{ ansible_env.PATH }}"
+  changed_when: true
 
-- name: Symlink soccer-shorts skill
-  ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/soccer-shorts"
-    dest: "{{ user_home }}/.claude/skills/soccer-shorts"
-    state: link
-    owner: "{{ user_name }}"
-    force: true
+- name: Register mattpocock skills marketplace
+  ansible.builtin.shell: |
+    claude plugin marketplace add mattpocock/skills --scope user
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+    PATH: "{{ user_home }}/.local/bin:{{ ansible_env.PATH }}"
+    CLAUDE_CODE_PLUGIN_PREFER_HTTPS: "1"
+  changed_when: true
 
-- name: Symlink grill-me skill
-  ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/grill-me"
-    dest: "{{ user_home }}/.claude/skills/grill-me"
-    state: link
-    owner: "{{ user_name }}"
-    force: true
-
-- name: Symlink grilling skill
-  ansible.builtin.file:
-    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/skills/grilling"
-    dest: "{{ user_home }}/.claude/skills/grilling"
-    state: link
-    owner: "{{ user_name }}"
-    force: true
+- name: Install mattpocock-skills plugin (grill-me, grilling, and more)
+  ansible.builtin.shell: |
+    claude plugin install mattpocock-skills@mattpocock
+  become_user: "{{ user_name }}"
+  become: true
+  environment:
+    HOME: "{{ user_home }}"
+    PATH: "{{ user_home }}/.local/bin:{{ ansible_env.PATH }}"
+  changed_when: true
 
 - name: Create .env from example if absent
   ansible.builtin.copy:
