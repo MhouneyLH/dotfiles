@@ -209,4 +209,8 @@ export NVM_DIR="$HOME/.nvm"
 ssh-add ~/.ssh/github/id_ed25519 2>/dev/null
 
 # opencode
-export PATH=/home/lucas-dev/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
+
+# other binaries
+export PATH=$HOME/Documents/bin:$PATH
+export PATH=$HOME/Documents/bin/dotnet/v11:$PATH
