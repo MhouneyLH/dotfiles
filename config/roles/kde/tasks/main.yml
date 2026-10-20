@@ -144,6 +144,19 @@
   become: true
   tags: kde_konsole
 
+- name: Install monitor layout script and autostart entry
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/kde/files/{{ item.src }}"
+    dest: "{{ user_home }}/{{ item.dest }}"
+    state: link
+    force: true
+  become_user: "{{ user_name }}"
+  become: true
+  loop:
+    - { src: bin/apply-monitor-layout, dest: .local/bin/apply-monitor-layout }
+    - { src: autostart/apply-monitor-layout.desktop, dest: .config/autostart/apply-monitor-layout.desktop }
+  tags: kde_monitors
+
 - name: Create Screenshots directory
   ansible.builtin.file:
     path: "{{ user_home }}/Pictures/Screenshots"

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=Apply monitor layout
+Exec=sh -c "sleep 5 && $HOME/.local/bin/apply-monitor-layout"
+X-KDE-autostart-phase=2
