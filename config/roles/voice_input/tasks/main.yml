@@ -6,6 +6,9 @@
       - portaudio19-dev
       - xdotool
       - sox
+      - golang-go
+      - libxkbcommon-dev
+      - pkg-config
       - unzip
     state: present
   tags: voice_input_deps
@@ -53,19 +56,19 @@
   become: true
   tags: voice_input_model
 
-- name: Download vosk small English model
+- name: Download vosk English model (lgraph: far more accurate than the small model, ~130 MB)
   ansible.builtin.get_url:
-    url: https://alphacephei.com/vosk/models/vosk-model-small-en-us-0.15.zip
-    dest: /tmp/vosk-model-small-en-us-0.15.zip
+    url: https://alphacephei.com/vosk/models/vosk-model-en-us-0.22-lgraph.zip
+    dest: /tmp/vosk-model-en-us-0.22-lgraph.zip
     mode: "0644"
   tags: voice_input_model
 
 - name: Extract vosk model
   ansible.builtin.unarchive:
-    src: /tmp/vosk-model-small-en-us-0.15.zip
+    src: /tmp/vosk-model-en-us-0.22-lgraph.zip
     dest: "{{ user_home }}/.local/share/vosk/"
     remote_src: true
-    creates: "{{ user_home }}/.local/share/vosk/vosk-model-small-en-us-0.15"
+    creates: "{{ user_home }}/.local/share/vosk/vosk-model-en-us-0.22-lgraph"
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
   become_user: "{{ user_name }}"
@@ -93,3 +96,49 @@
   become_user: "{{ user_name }}"
   become: true
   tags: voice_input_script
+
+- name: Install dotool (types text on Wayland via uinput)
+  ansible.builtin.command:
+    cmd: go install git.sr.ht/~geb/dotool@latest
+    creates: "{{ user_home }}/.local/bin/dotool"
+  environment:
+    GOBIN: "{{ user_home }}/.local/bin"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_dotool
+
+- name: Allow input group access to /dev/uinput for dotool
+  ansible.builtin.copy:
+    dest: /etc/udev/rules.d/80-dotool.rules
+    content: |
+      KERNEL=="uinput", GROUP="input", MODE="0660", OPTIONS+="static_node=uinput"
+    mode: "0644"
+  tags: voice_input_dotool
+
+- name: Add user to input group
+  ansible.builtin.user:
+    name: "{{ user_name }}"
+    groups: input
+    append: true
+  tags: voice_input_dotool
+
+- name: Ensure nerd-dictation config directory exists
+  ansible.builtin.file:
+    path: "{{ user_home }}/.config/nerd-dictation"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_config
+
+- name: Symlink nerd-dictation text processing config
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/voice_input/files/nerd-dictation.py"
+    dest: "{{ user_home }}/.config/nerd-dictation/nerd-dictation.py"
+    state: link
+    force: true
+  become_user: "{{ user_name }}"
+  become: true
+  tags: voice_input_config

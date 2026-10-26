@@ -1,10 +1,17 @@
 #!/bin/bash
 VENV_PYTHON="${HOME}/.local/share/nerd-dictation-venv/bin/python"
 NERD_DICTATION="${HOME}/.local/share/nerd-dictation/nerd-dictation"
-VOSK_MODEL="${HOME}/.local/share/vosk/vosk-model-small-en-us-0.15"
+VOSK_MODEL="${HOME}/.local/share/vosk/vosk-model-en-us-0.22-lgraph"
+
+# xdotool only reaches X11 windows; on Wayland (KDE) type through dotool (uinput) instead
+INPUT_ARGS=()
+if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
+    export PATH="${HOME}/.local/bin:${PATH}"
+    INPUT_ARGS=(--simulate-input-tool=DOTOOL)
+fi
 
 if pgrep -f "nerd-dictation begin" > /dev/null 2>&1; then
     "${VENV_PYTHON}" "${NERD_DICTATION}" end
 else
-    "${VENV_PYTHON}" "${NERD_DICTATION}" begin --vosk-model-dir="${VOSK_MODEL}"
+    "${VENV_PYTHON}" "${NERD_DICTATION}" begin --config="${HOME}/.config/nerd-dictation/nerd-dictation.py" --vosk-model-dir="${VOSK_MODEL}" "${INPUT_ARGS[@]}"
 fi
