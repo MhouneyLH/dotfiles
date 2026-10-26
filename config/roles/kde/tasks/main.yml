@@ -168,6 +168,44 @@
   become: true
   tags: kde_spectacle
 
+- name: Create user sounds directory
+  ansible.builtin.file:
+    path: "{{ user_home }}/.local/share/sounds"
+    state: directory
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0755"
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_notification_sound
+
+- name: Symlink custom notification sound from dotfiles repo
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/kde/files/sounds/huh_cat_cut.mp3"
+    dest: "{{ user_home }}/.local/share/sounds/huh_cat_cut.mp3"
+    state: link
+    force: true
+  become_user: "{{ user_name }}"
+  become: true
+  tags: kde_notification_sound
+
+- name: Use custom sound for system notifications
+  community.general.ini_file:
+    path: "{{ user_home }}/.config/plasma_workspace.notifyrc"
+    section: Event/notification
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "0644"
+    create: true
+  become_user: "{{ user_name }}"
+  become: true
+  loop:
+    - { key: "Action", value: "Popup|Sound" } # keep popup, add sound
+    - { key: "Sound", value: "{{ user_home }}/.local/share/sounds/huh_cat_cut.mp3" }
+  tags: kde_notification_sound
+
 - name: Restart KDE Plasma to apply changes
   ansible.builtin.command: kquitapp5 plasmashell && kstart5 plasmashell
   become_user: "{{ user_name }}"
