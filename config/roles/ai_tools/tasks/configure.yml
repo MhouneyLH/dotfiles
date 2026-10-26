@@ -22,6 +22,14 @@
     owner: "{{ user_name }}"
     force: true
 
+- name: Symlink Claude Code status line script
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/statusline.py"
+    dest: "{{ user_home }}/.claude/statusline.py"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
 - name: Register lucas-dotfiles Claude plugin marketplace
   ansible.builtin.shell: |
     claude plugin marketplace add "{{ git_repos_path }}/dotfiles" --scope user
@@ -71,7 +79,7 @@
     owner: "{{ user_name }}"
     mode: "0600"
 
-- name: Configure Claude Code permissions
+- name: Configure Claude Code permissions and status line
   ansible.builtin.shell: |
     python3 - <<'PYEOF'
     import json, os
@@ -85,9 +93,10 @@
     except (FileNotFoundError, json.JSONDecodeError):
         config = {}
     config["permissions"] = perms
+    config["statusLine"] = {"type": "command", "command": "python3 ~/.claude/statusline.py"}
     with open(settings_path, "w") as f:
         json.dump(config, f, indent=2)
-    print("Permissions configured.")
+    print("Permissions and status line configured.")
     PYEOF
   become_user: "{{ user_name }}"
   become: true
