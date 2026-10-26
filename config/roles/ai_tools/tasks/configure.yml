@@ -30,6 +30,14 @@
     owner: "{{ user_name }}"
     force: true
 
+- name: Symlink Claude Code notification script
+  ansible.builtin.file:
+    src: "{{ git_repos_path }}/dotfiles/config/roles/ai_tools/files/claude/notify.sh"
+    dest: "{{ user_home }}/.claude/notify.sh"
+    state: link
+    owner: "{{ user_name }}"
+    force: true
+
 - name: Register lucas-dotfiles Claude plugin marketplace
   ansible.builtin.shell: |
     claude plugin marketplace add "{{ git_repos_path }}/dotfiles" --scope user
@@ -79,7 +87,7 @@
     owner: "{{ user_name }}"
     mode: "0600"
 
-- name: Configure Claude Code permissions and status line
+- name: Configure Claude Code permissions, status line and notification hooks
   ansible.builtin.shell: |
     python3 - <<'PYEOF'
     import json, os
@@ -94,9 +102,13 @@
         config = {}
     config["permissions"] = perms
     config["statusLine"] = {"type": "command", "command": "python3 ~/.claude/statusline.py"}
+    notify = lambda title, body: [{"hooks": [{"type": "command", "command": f"bash ~/.claude/notify.sh '{title}' '{body}'"}]}]
+    hooks = config.setdefault("hooks", {})
+    hooks["Notification"] = notify("Claude Code", "Needs your attention")
+    hooks["Stop"] = notify("Claude Code", "Done")
     with open(settings_path, "w") as f:
         json.dump(config, f, indent=2)
-    print("Permissions and status line configured.")
+    print("Permissions, status line and notification hooks configured.")
     PYEOF
   become_user: "{{ user_name }}"
   become: true

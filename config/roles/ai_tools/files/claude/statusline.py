@@ -116,11 +116,11 @@ def tokens(n):
 
 
 def left(label, window):
-    """'5h 77% left (2h13m)' for one rate limit window, or '' when the field is missing."""
+    """'[5h] 77% left (2h13m)' for one rate limit window, or '' when the field is missing."""
     used = (window or {}).get("used_percentage")
     if used is None:
         return ""
-    text = f"{label} {max(0, 100 - used):.0f}% left"
+    text = f"[{label}] {max(0, 100 - used):.0f}% left"
     resets_at = window.get("resets_at")
     if resets_at:
         minutes = max(0, int(resets_at - time.time())) // 60
