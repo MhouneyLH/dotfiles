@@ -49,7 +49,7 @@
     "Bash(k9s*)",
     "Bash(minikube*)",
     "Bash(helm*)",
-    "Bash(terraform*)",
+    "Bash(tofu*)",
     "Bash(ansible*)",
     "Bash(cargo*)",
     "Bash(go*)",

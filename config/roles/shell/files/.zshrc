@@ -145,7 +145,7 @@ xset r rate $timeUntilRepeating $repeatRate
 
 # general
 alias cdg="cd /home/$USER/Documents/git/"
-alias tf="terraform"
+alias tf="tofu"
 alias ..="cd .."
 alias ...="cd ..."
 alias ....="cd ...."

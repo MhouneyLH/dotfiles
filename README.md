@@ -7,7 +7,7 @@ Currently I collected my configuration for:
 - KDE Plasma
 - Konsole
 - shell (zsh)
-- base and development tools (terraform, kubectl, docker, kustomize etc.)
+- base and development tools (opentofu, kubectl, docker, kustomize etc.)
 - ... of course: AI tools (skills, system prompt etc.)
 - other applications I use on a near daily basis
 
