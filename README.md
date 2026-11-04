@@ -36,6 +36,13 @@ sudo ./install.sh
 claude auth login
 ```
 
+### Unity MCP
+
+`mcp.json.example` registers [CoplayDev/unity-mcp](https://github.com/CoplayDev/unity-mcp) as `unityMCP` (HTTP, `http://localhost:8080/mcp`). It only connects while the Unity Editor is open with the package installed (needs `uv`):
+
+1. Unity: Package Manager → Add package from git URL → `https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#v10.0.0`
+2. Unity: `Window → MCP for Unity` → start the server, check the status reads `Connected`
+
 If only part of the configuration should be applied, run the Ansible playbook with specific tags:
 
 ```bash

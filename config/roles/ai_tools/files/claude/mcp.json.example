@@ -13,6 +13,10 @@
       "args": ["-y", "@modelcontextprotocol/server-sequential-thinking@2025.12.18"],
       "env": {}
     },
+    "unityMCP": {
+      "type": "http",
+      "url": "http://localhost:8080/mcp"
+    },
     "obsidian": {
       "type": "http",
       "url": "https://127.0.0.1:27124/mcp/",

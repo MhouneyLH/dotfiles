@@ -164,7 +164,7 @@ alias update="sudo apt update && sudo apt upgrade"
 
 # programs
 alias unity="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity"
-alias unity_feuersim="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity -projectpath /home/lucas-dev/Documents/git/FeuerSim"
+alias unity_feuersim="GDK_SCALE=2 GDK_DPI_SCALE=0.5 /home/$USER/Unity/Hub/Editor/6000.0.33f1/Editor/Unity -projectpath /home/lucas-dev/Documents/git/feuersim/feuersim-frontend"
 alias dn="dotnet"
 alias postman="Postman"
 
